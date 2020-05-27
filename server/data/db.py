@@ -22,7 +22,17 @@ def add_user(name, password, tag, main):
 
 def remove_user(name):
     """removes user from 'users' collection based on name"""
-    collection.remove({"name": name})
+    u = collection.find({"games": {"$elemMatch": {"opponent": name}}})  # finds user with games against name
+    for x in u:
+        games = get_all_games(x["name"])
+        i = 0
+        while i < len(games):
+            if games[i].opponent == name:
+                games.pop(i)
+            else:
+                i += 1
+        set_all_games(x["name"], games)
+    collection.delete_one({"name": name})
 
 
 def add_game(user: str, user_char: str, opponent: str, opponent_char: str,
@@ -58,6 +68,14 @@ def change_main(name, main):
     collection.update_one({"name": name}, {"$set": {"main": main}})
 
 
+def set_all_games(name, games):
+    """sets all games for user "name" to list of game objects "games" """
+    dict_games = []
+    for game in games:
+        dict_games.append(game.__dict__)
+    collection.update_one({"name": name}, {"$set": {"games": dict_games}})
+
+
 def get_all_games(name):
     games = []
     if collection.find_one({"name": name}) is None:
@@ -79,11 +97,16 @@ def get_matchup(user, opponent):
     return games
 
 
+# For testing functions
 clear_users_collection()
 add_user('Tod', 'pass', 'Tod', 'Captain Falcon')
 add_user('Buervo', 'pass', 'Buervo', 'Falco')
+add_user('John', 'pass', 'John', 'Captain Falcon')
 add_game('Tod', 'Captain Falcon', 'Buervo', 'Kirby', 'Final Destination', True, 4, 0)
 add_game('Tod', 'Captain Falcon', 'Buervo', 'Falco', 'Pokemon Stadium', True, 1, 0)
-for game in get_all_games('Buervo'):
-    print(game)
-
+add_game('Tod', 'Captain Falcon', 'John', 'Kirby', 'Final Destination', True, 4, 0)
+add_game('Tod', 'Captain Falcon', 'John', 'Falco', 'Pokemon Stadium', True, 1, 0)
+add_game('Buervo', 'Captain Falcon', 'John', 'Falco', 'Pokemon Stadium', True, 1, 0)
+"""for game in get_all_games('Buervo'):
+    print(game)"""
+remove_user('Buervo')
