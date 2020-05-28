@@ -1,38 +1,33 @@
-import React from 'react';
-import shine from './assets/shine.png';
-import falco from './assets/falco.png'
-import fox from './assets/fox.png'
-import './App.css';
+import React, {Component} from 'react';
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch
+} from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <div className="row">
-          <div className="col">
-            <img src={falco} className="Character-image" />
-          </div>
-          <div className="col">
-            <img src={shine} className="App-logo" alt="logo" />
-          </div>
-          <div className="col">
-            <img src={fox} className="Character-image" />
-          </div>
-        </div>
-        <p>
-          Welcome to Smash Tracker!
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Login here to track your play
-        </a>
-      </header>
-    </div>
-  );
+//Components
+import Home from "./components/pages/home";
+import NotFound from "./components/pages/404"
+
+
+export default class App extends Component {
+
+    handleRoute = e => {
+        this.setState({
+            currentUrl: e.url
+        });
+    };
+
+    render() {
+        return (
+            <div id="app">
+                <Router onChange={this.handleRoute}>
+                    <Switch>
+                        <Route exact path="/" component={Home}/>
+                        <Route component={NotFound}/>
+                    </Switch>
+                </Router>
+            </div>
+        );
+    }
 }
-
-export default App;
