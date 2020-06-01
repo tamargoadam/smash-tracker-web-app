@@ -21,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
         top: 0,
         left: 0,
         width: '100%',
-        height: '100%'
+        height: '100%',
+        overflow: 'scroll'
     },
     container: {
         border: '12px solid #282c34',
@@ -44,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         background: '#282c34',
         '&:hover': {
-            background: "#4fafc9",
+            background: "#4fafc9"
         },
         margin: theme.spacing(3, 0, 2),
     },
@@ -105,7 +106,7 @@ export default function SignIn() {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link href="/signup" variant="body2">
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>
