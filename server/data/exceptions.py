@@ -19,6 +19,16 @@ class GameNotFound(Error):
         self.message = 'No games between users {0} and {1} were found.'.format(user, opponent)
 
 
+class MatchUpNotFound(Error):
+    def __init__(self, user, opponent):
+        self.message = 'No match up between users {0} and {1} was not found.'.format(user, opponent)
+
+
+class MatchUpAlreadyExists(Error):
+    def __init__(self, user, opponent):
+        self.message = 'Match up between users {0} and {1} already exists.'.format(user, opponent)
+
+
 class UserIsOpponent(Error):
     def __init__(self):
         self.message = 'User and opponent must not be the same.'
