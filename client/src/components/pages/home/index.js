@@ -6,7 +6,7 @@ import Fox from '../../../assets/fox.png'
 import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => ({
-    home: {
+    container: {
         textAlign: 'center'
     },
     homeLogo: {
@@ -54,7 +54,7 @@ export default function Home() {
     const classes = useStyles();
 
     return (
-        <div className={classes.home}>
+        <div className={classes.container}>
             <header className={classes.header}>
                 <div className={classes.row}>
                     <div className={classes.col}>

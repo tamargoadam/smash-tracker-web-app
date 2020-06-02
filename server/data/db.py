@@ -7,6 +7,8 @@ cluster = MongoClient('mongodb+srv://tamargoadam:Blackacre1@cluster0-kahtq.mongo
 db = cluster["melee"]
 collection = db["users"]
 
+# TODO: incorporate match_up
+
 
 def clear_users_collection():
     """remove all records from 'users' collection"""
@@ -88,7 +90,7 @@ def get_all_games(email):
     return games
 
 
-def get_matchup(user, opponent):
+def get_match_up(user, opponent):
     games = []
     for game in get_all_games(user):
         if game.opponent == opponent:

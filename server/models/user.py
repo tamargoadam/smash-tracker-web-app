@@ -6,4 +6,4 @@ class User:
         self.password = password
         self.tag = tag
         self.main = main
-        self.games = []
+        self.match_ups = []
