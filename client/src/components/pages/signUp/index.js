@@ -60,113 +60,112 @@ export default function SignUp() {
 
     return (
         <div className={classes.back}>
-        <Container className={classes.container} component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-                <img className={classes.logo} src={Shine}/>
-                <Typography component="h1" variant="h5">
-                    Sign up
-                </Typography>
-                <form className={classes.form} noValidate>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                autoComplete="fname"
-                                name="firstName"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="firstName"
-                                label="First Name"
-                                autoFocus
-                            />
+            <Container className={classes.container} component="main" maxWidth="xs">
+                <CssBaseline />
+                <div className={classes.paper}>
+                    <img className={classes.logo} src={Shine}/>
+                    <Typography component="h1" variant="h5">
+                        Sign up
+                    </Typography>
+                    <form className={classes.form} noValidate>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    autoComplete="fname"
+                                    name="firstName"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="firstName"
+                                    label="First Name"
+                                    autoFocus
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="lastName"
+                                    label="Last Name"
+                                    name="lastName"
+                                    autoComplete="lname"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="current-password"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="tag"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="tag"
+                                    label="Tag"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <select
+                                    className={classes.select}
+                                    required
+                                    id="main"
+                                    name="main"
+                                    size='5'
+                                >
+                                    <option selected>
+                                        No Main
+                                    </option>
+                                    {CHARACTERS.map((char) =>
+                                        <option>
+                                            {char}
+                                        </option>
+                                    )}
+                                </select>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="lastName"
-                                label="Last Name"
-                                name="lastName"
-                                autoComplete="lname"
-                            />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
+                            Sign Up
+                        </Button>
+                        <Grid container justify="flex-end">
+                            <Grid item>
+                                <Link href="/signin" variant="body2">
+                                    Already have an account? Sign in
+                                </Link>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                name="tag"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="tag"
-                                label="Tag"
-                                autoFocus
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <select
-                                className={classes.select}
-                                required
-                                id="main"
-                                name="main"
-                                size='5'
-                            >
-                                <option selected>
-                                    No Main
-                                </option>
-                                {CHARACTERS.map((char) =>
-                                <option>
-                                    {char}
-                                </option>
-                                )}
-                            </select>
-                        </Grid>
-                    </Grid>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Sign Up
-                    </Button>
-                    <Grid container justify="flex-end">
-                        <Grid item>
-                            <Link href="/signin" variant="body2">
-                                Already have an account? Sign in
-                            </Link>
-                        </Grid>
-                    </Grid>
-                </form>
-            </div>
-            <Box mt={8}>
-                <Copyright/>
-            </Box>
-        </Container>
+                    </form>
+                </div>
+                <Box mt={8}>
+                    <Copyright/>
+                </Box>
+            </Container>
         </div>
     );
 }

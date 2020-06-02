@@ -32,7 +32,6 @@ export default class App extends Component {
                         <Route component={NotFound}/>
                     </Switch>
                 </Router>
-                <Copyright/>
             </div>
         );
     }

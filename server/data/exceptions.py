@@ -5,13 +5,13 @@ class Error(Exception):
 
 
 class UserAlreadyExists(Error):
-    def __init__(self, name):
-        self.message = 'User, {0}, already exists.'.format(name)
+    def __init__(self, email):
+        self.message = 'User with email, {0}, already exists.'.format(email)
 
 
 class UserNotFound(Error):
-    def __init__(self, name):
-        self.message = 'User, {0}, not found.'.format(name)
+    def __init__(self, email):
+        self.message = 'User with email, {0}, not found.'.format(email)
 
 
 class GameNotFound(Error):
