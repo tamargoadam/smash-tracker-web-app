@@ -8,8 +8,6 @@ cluster = MongoClient('mongodb+srv://tamargoadam:Blackacre1@cluster0-kahtq.mongo
 db = cluster["melee"]
 collection = db["users"]
 
-# TODO: incorporate match_up
-
 
 def clear_users_collection():
     """remove all records from 'users' collection"""
@@ -137,14 +135,14 @@ def add_game(user: str, user_char: str, opponent: str, opponent_char: str,
     collection.update_one({"email": user, "match_ups.opponent": opponent},
                           {"$push":
                               {
-                                  "match_ups.$[].games": Game(user_char, opponent, opponent_char,
-                                                              stage, win, user_stock, opponent_stock).__dict__
+                                  "match_ups.$[].games": Game(user_char, opponent_char, stage,
+                                                              win, user_stock, opponent_stock).__dict__
                               }})
     collection.update_one({"email": opponent, "match_ups.opponent": user},
                           {"$push":
                               {
-                                  "match_ups.$[].games": Game(opponent_char, user, user_char,
-                                                              stage, not win, opponent_stock, user_stock).__dict__
+                                  "match_ups.$[].games": Game(opponent_char, user_char, stage,
+                                                              not win, opponent_stock, user_stock).__dict__
                               }})
 
 

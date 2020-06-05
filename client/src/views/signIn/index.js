@@ -10,8 +10,8 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Shine from '../../../assets/shine.png';
-import Copyright from '../../copyright'
+import Shine from '../../assets/shine.png';
+import Copyright from '../../components/copyright/copyright'
 
 
 const useStyles = makeStyles((theme) => ({

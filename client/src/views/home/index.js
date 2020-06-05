@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import Shine from '../../../assets/shine.png';
-import Falco from '../../../assets/falco.png'
-import Fox from '../../../assets/fox.png'
+import Shine from '../../assets/shine.png';
+import Falco from '../../assets/falco.png'
+import Fox from '../../assets/fox.png'
 import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => ({

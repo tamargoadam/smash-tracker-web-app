@@ -7,10 +7,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Shine from "../../../assets/shine.png";
-import Copyright from "../../copyright";
 import Box from "@material-ui/core/Box";
-import { CHARACTERS } from "../../../constants"
+import Shine from "../../assets/shine.png";
+import Copyright from "../../components/copyright/copyright";
+import { CHARACTERS } from "../../constants"
 
 const useStyles = makeStyles((theme) => ({
     back: {

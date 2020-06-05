@@ -5,7 +5,7 @@ class MatchUp:
         self.losses = losses
         self.games = games
 
-    def __str__(self):
+    def dict(self):
         match_up_dict = {
             "opponent": self.opponent,
             "wins": self.wins,
@@ -14,4 +14,8 @@ class MatchUp:
         }
         for game in self.games:
             match_up_dict["games"].append(game.__dict__)
-        return str(match_up_dict)
+        return match_up_dict
+
+    def __str__(self):
+        return str(self.dict())
+

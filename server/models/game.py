@@ -10,7 +10,7 @@ class Game:
         self.win = win
         self.user_stock = user_stock
         self.opponent_stock = opponent_stock
-        self.date = datetime.datetime.now() if date is '' else date
+        self.date = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") if date is '' else date
 
     def __str__(self):
         return str(self.__dict__)
