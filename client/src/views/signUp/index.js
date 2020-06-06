@@ -10,7 +10,7 @@ import Container from '@material-ui/core/Container';
 import Box from "@material-ui/core/Box";
 import Shine from "../../assets/shine.png";
 import Copyright from "../../components/copyright/copyright";
-import { CHARACTERS } from "../../constants"
+import { CHARACTERS, STOCK_LOGOS } from "../../constants"
 
 const useStyles = makeStyles((theme) => ({
     back: {
@@ -44,6 +44,11 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         height: '100%',
         borderRadius: '5px'
+    },
+    option: {
+        backgroundRepeat: "no-repeat",
+        textAlign: "right",
+        height: 25
     },
     submit: {
         background: '#282c34',
@@ -131,13 +136,19 @@ export default function SignUp() {
                                     required
                                     id="main"
                                     name="main"
-                                    size='5'
+                                    size='4'
                                 >
-                                    <option selected>
+                                    <option selected
+                                            className={classes.option}
+                                            style={{backgroundImage: "url("+STOCK_LOGOS["Smash Ball"]+")"}}
+                                    >
                                         No Main
                                     </option>
                                     {CHARACTERS.map((char) =>
-                                        <option>
+                                        <option
+                                            className={classes.option}
+                                            style={{backgroundImage: "url("+STOCK_LOGOS[char]+")"}}
+                                        >
                                             {char}
                                         </option>
                                     )}

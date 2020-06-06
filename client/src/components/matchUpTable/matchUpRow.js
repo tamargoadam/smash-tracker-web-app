@@ -12,6 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import { STOCK_LOGOS } from "../../constants";
 
 const useStyles = makeStyles({
     root: {
@@ -64,8 +65,12 @@ export default function MatchUpRow(props) {
                                             <TableCell component="th" scope="row">
                                                 {gameRow.date}
                                             </TableCell>
-                                            <TableCell align="right">{gameRow.user_char}</TableCell>
-                                            <TableCell align="right">{gameRow.opponent_char}</TableCell>
+                                            <TableCell align="right">
+                                                <img src={STOCK_LOGOS[gameRow.user_char]}/>
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <img src={STOCK_LOGOS[gameRow.opponent_char]}/>
+                                            </TableCell>
                                             <TableCell align="right">{gameRow.stage}</TableCell>
                                             <TableCell align="right">
                                                 {gameRow.win ? "Win" : "Loss"}
