@@ -37,7 +37,7 @@ export default function MatchUpRow(props) {
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row">
-                    {row.opponent}
+                    {row.opponent_tag}
                 </TableCell>
                 <TableCell align="right">{row.wins}</TableCell>
                 <TableCell align="right">{row.losses}</TableCell>
@@ -72,7 +72,10 @@ export default function MatchUpRow(props) {
                                                 <img src={STOCK_LOGOS[gameRow.opponent_char]}/>
                                             </TableCell>
                                             <TableCell align="right">{gameRow.stage}</TableCell>
-                                            <TableCell align="right">
+                                            <TableCell
+                                                align="right"
+                                                style={{color: gameRow.win ? "Green" : "Red"}}
+                                            >
                                                 {gameRow.win ? "Win" : "Loss"}
                                             </TableCell>
                                         </TableRow>
@@ -90,6 +93,7 @@ export default function MatchUpRow(props) {
 MatchUpRow.propTypes = {
     row: PropTypes.shape({
         opponent: PropTypes.string.isRequired,
+        opponent_tag: PropTypes.string.isRequired,
         wins: PropTypes.number.isRequired,
         losses: PropTypes.number.isRequired,
         games: PropTypes.arrayOf(
@@ -100,6 +104,8 @@ MatchUpRow.propTypes = {
                 win: PropTypes.bool.isRequired,
                 user_stock: PropTypes.number.isRequired,
                 opponent_stock: PropTypes.number.isRequired,
+                user_approved: PropTypes.bool.isRequired,
+                opponent_approved: PropTypes.bool.isRequired,
                 date: PropTypes.string.isRequired
             }),
         ).isRequired,

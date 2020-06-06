@@ -48,6 +48,7 @@ MatchUpTable.propTypes = {
     match_ups: PropTypes.arrayOf(
         PropTypes.shape({
             opponent: PropTypes.string.isRequired,
+            opponent_tag: PropTypes.string.isRequired,
             wins: PropTypes.number.isRequired,
             losses: PropTypes.number.isRequired,
             games: PropTypes.arrayOf(
@@ -58,9 +59,11 @@ MatchUpTable.propTypes = {
                     win: PropTypes.bool.isRequired,
                     user_stock: PropTypes.number.isRequired,
                     opponent_stock: PropTypes.number.isRequired,
+                    user_approved: PropTypes.bool.isRequired,
+                    opponent_approved: PropTypes.bool.isRequired,
                     date: PropTypes.string.isRequired
                 }),
             ).isRequired,
-        }).isRequired
+        }).isRequired,
     ).isRequired
 };

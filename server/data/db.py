@@ -1,8 +1,10 @@
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 from models.user import User
 from models.match_up import MatchUp
 from models.game import Game
 from data.exceptions import *
+
 
 cluster = MongoClient('mongodb+srv://tamargoadam:Blackacre1@cluster0-kahtq.mongodb.net/test?retryWrites=true&w=majority')
 db = cluster["melee"]
@@ -55,9 +57,11 @@ def add_match_up(user: str, opponent: str):
     """
     if user is opponent:
         raise UserIsOpponent
-    if collection.find_one({"email": user}) is None:
+    user_data = collection.find_one({"email": user})
+    if user_data is None:
         raise UserNotFound(user)
-    if collection.find_one({"email": opponent}) is None:
+    opponent_data = collection.find_one({"email": opponent})
+    if opponent_data is None:
         raise UserNotFound(opponent)
     if collection.find_one({"email": user, "match_ups.opponent": opponent}) is not None:
         raise MatchUpAlreadyExists(user, opponent)
@@ -68,6 +72,22 @@ def add_match_up(user: str, opponent: str):
                 "match_ups":
                     {
                         "opponent": opponent,
+                        "opponent_tag": opponent_data["tag"],
+                        "wins": 0,
+                        "losses": 0,
+                        "games": []
+                    }
+            }
+        }
+    )
+    collection.update_one(
+        {"email": opponent},
+        {"$push":
+            {
+                "match_ups":
+                    {
+                        "opponent": user,
+                        "opponent_tag": user_data["tag"],
                         "wins": 0,
                         "losses": 0,
                         "games": []
@@ -102,20 +122,18 @@ def add_game(user: str, user_char: str, opponent: str, opponent_char: str,
         raise UserNotFound(opponent)
     if collection.find_one({"email": user, "match_ups.opponent": opponent}) is None:
         add_match_up(user, opponent)
-    if collection.find_one({"email": opponent, "match_ups.opponent": user}) is None:
-        add_match_up(opponent, user)
     # increment wins or losses for each player based on 'win' bool
     if win:
         collection.update_one({"email": user, "match_ups.opponent": opponent},
                               {"$inc":
                                   {
-                                      "match_ups.$[].wins": 1
+                                      "match_ups.$.wins": 1
                                   }}
                               )
         collection.update_one({"email": opponent, "match_ups.opponent": user},
                               {"$inc":
                                   {
-                                      "match_ups.$[].losses": 1
+                                      "match_ups.$.losses": 1
                                   }}
                               )
     else:
@@ -132,18 +150,50 @@ def add_game(user: str, user_char: str, opponent: str, opponent_char: str,
                                   }}
                               )
     # add game to each player's match up
+    _id = str(ObjectId())
     collection.update_one({"email": user, "match_ups.opponent": opponent},
                           {"$push":
                               {
-                                  "match_ups.$[].games": Game(user_char, opponent_char, stage,
-                                                              win, user_stock, opponent_stock).__dict__
+                                  "match_ups.$.games": Game(_id, user_char, opponent_char, stage,
+                                                              win, user_stock, opponent_stock, True, False).__dict__
                               }})
     collection.update_one({"email": opponent, "match_ups.opponent": user},
                           {"$push":
                               {
-                                  "match_ups.$[].games": Game(opponent_char, user_char, stage,
-                                                              not win, opponent_stock, user_stock).__dict__
+                                  "match_ups.$.games": Game(_id, opponent_char, user_char, stage,
+                                                              not win, opponent_stock, user_stock, False, True).__dict__
                               }})
+
+
+def approve_game(user: str, opponent: str, game_ids: list):
+    user_match_ups = collection.find_one({"email": user},
+                                        {"match_ups": {"$elemMatch": {"opponent": opponent}}})["match_ups"]
+    for match_up in user_match_ups:
+        if match_up["opponent"] == opponent:
+            user_match_up = match_up
+            break
+    opponent_match_ups = collection.find_one({"email": opponent},
+                                            {"match_ups": {"$elemMatch": {"opponent": user}}})["match_ups"]
+    for match_up in opponent_match_ups:
+        if match_up["opponent"] == user:
+            opponent_match_up = match_up
+            break
+    # set games for user's match ups with updated approval
+    games = []
+    for game in user_match_up["games"]:
+        if game["_id"] in game_ids:
+            game["user_approved"] = True
+        games.append(game)
+    collection.update_one({"email": user, "match_ups.opponent": opponent},
+                          {"$set": {"match_ups.$.games": games}})
+    # set games for opponent's match ups with updated approval
+    games = []
+    for game in opponent_match_up["games"]:
+        if game["_id"] in game_ids:
+            game["opponent_approved"] = True
+        games.append(game)
+    collection.update_one({"email": opponent, "match_ups.opponent": user},
+                          {"$set": {"match_ups.$.games": games}})
 
 
 def change_main(user, main):
@@ -172,9 +222,10 @@ def get_all_match_ups(email):
         games = []
         for game in match_up["games"]:
             # add game obj to games
-            games.append(Game(game["user_char"], game["opponent_char"], game["stage"], game["win"],
-                              game["user_stock"], game["opponent_stock"], game["date"]))
-        match_ups.append(MatchUp(match_up["opponent"], match_up["wins"], match_up["losses"], games))
+            games.append(Game(game["_id"], game["user_char"], game["opponent_char"], game["stage"], game["win"], game["user_stock"],
+                              game["opponent_stock"], game["user_approved"], game["opponent_approved"], game["date"]))
+        match_ups.append(MatchUp(match_up["opponent"], match_up["opponent_tag"], match_up["wins"],
+                                 match_up["losses"], games))
     return match_ups
 
 
@@ -188,15 +239,19 @@ def get_match_up(user, opponent):
 
 
 # For testing functions
+"""
 clear_users_collection()
 add_user('Adam', 'Tamargo', 'atamargo@ufl.edu', 'pass', 'Tod', 'Captain Falcon')
 add_user('Mike', 'Cuervo', 'mikec@gmail.com', 'pass', 'Buervo', 'Falco')
 add_user('John', 'Carey', 'jc813@yahoo.com', 'pass', 'John', 'Captain Falcon')
-add_game('atamargo@ufl.edu', 'Captain Falcon', 'mikec@gmail.com', 'Kirby', 'Final Destination', True, 4, 0)
-add_game('atamargo@ufl.edu', 'Captain Falcon', 'mikec@gmail.com', 'Falco', 'Pokemon Stadium', True, 1, 0)
-add_game('atamargo@ufl.edu', 'Captain Falcon', 'jc813@yahoo.com', 'Kirby', 'Final Destination', True, 4, 0)
+add_game('atamargo@ufl.edu', 'Mr. Game & Watch', 'mikec@gmail.com', 'Kirby', 'Final Destination', True, 4, 0)
+add_game('atamargo@ufl.edu', 'Fox', 'mikec@gmail.com', 'Falco', 'Pokemon Stadium', False, 0, 1)
+add_game('atamargo@ufl.edu', 'Yoshi', 'jc813@yahoo.com', 'Kirby', 'Fountain of Dreams', True, 4, 0)
 add_game('atamargo@ufl.edu', 'Captain Falcon', 'jc813@yahoo.com', 'Falco', 'Pokemon Stadium', True, 1, 0)
-add_game('mikec@gmail.com', 'Captain Falcon', 'jc813@yahoo.com', 'Falco', 'Pokemon Stadium', True, 1, 0)
+add_game('mikec@gmail.com', 'Samus', 'jc813@yahoo.com', 'Falco', 'Yoshi\'s Island', True, 1, 0)
+"""
+
+approve_game('mikec@gmail.com', 'atamargo@ufl.edu', [str(ObjectId('5edc1c8cdf3fa67d0d7a936d'))])
 
 # remove_user('mikec@gmail.com')
 
