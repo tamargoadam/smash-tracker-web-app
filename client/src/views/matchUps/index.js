@@ -26,8 +26,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function MatchUps(props) {
-    const [matchUps, setMatchUps] = useState([])
-    const [expand, setExpand] = useState(null)
+    const [matchUps, setMatchUps] = useState([]);
 
     const classes = useStyles();
 

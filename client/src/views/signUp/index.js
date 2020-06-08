@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -10,7 +10,10 @@ import Container from '@material-ui/core/Container';
 import Box from "@material-ui/core/Box";
 import Shine from "../../assets/shine.png";
 import Copyright from "../../components/copyright/copyright";
-import { CHARACTERS, STOCK_LOGOS } from "../../constants"
+import { CHARACTERS, STOCK_LOGOS, SNACKBAR_SEVERITY } from "../../constants"
+import axios from "axios";
+import Snackbar from "@material-ui/core/Snackbar/Snackbar";
+import MuiAlert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
     back: {
@@ -62,6 +65,47 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
     const classes = useStyles();
+    const [user, setUser] = useState(
+        {
+            data: {
+                f_name: "",
+                l_name: "",
+                email: "",
+                password: "",
+                tag: "",
+                main: "No Main"
+            }
+        });
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [alertMessage, setAlertMessage] = React.useState('');
+    const [alertSeverity, setAlertSeverity] = React.useState(SNACKBAR_SEVERITY.info);
+
+    const postUserData = async () => {
+        // Post to signup api
+        axios.post(
+            'http://127.0.0.1:5000/signup', user
+        ).then(response =>
+        {
+            setAlertSeverity(SNACKBAR_SEVERITY.success)
+            setAlertMessage('Account successfully created!')
+            setOpenAlert(true);
+        }
+        ).catch(error =>
+        {
+            setAlertSeverity(SNACKBAR_SEVERITY.error)
+            setAlertMessage(error.response.data.message)
+            setOpenAlert(true);
+        });
+        // Notify user on success of registration
+    }
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
 
     return (
         <div className={classes.back}>
@@ -84,6 +128,7 @@ export default function SignUp() {
                                     id="firstName"
                                     label="First Name"
                                     autoFocus
+                                    onChange={e => setUser({...user, data: {...user.data, f_name: e.target.value}})}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -95,6 +140,7 @@ export default function SignUp() {
                                     label="Last Name"
                                     name="lastName"
                                     autoComplete="lname"
+                                    onChange={e => setUser({...user, data: {...user.data, l_name: e.target.value}})}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -106,6 +152,7 @@ export default function SignUp() {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
+                                    onChange={e => setUser({...user, data: {...user.data, email: e.target.value}})}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -118,6 +165,7 @@ export default function SignUp() {
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
+                                    onChange={e => setUser({...user, data: {...user.data, password: e.target.value}})}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -128,6 +176,7 @@ export default function SignUp() {
                                     fullWidth
                                     id="tag"
                                     label="Tag"
+                                    onChange={e => setUser({...user, data: {...user.data, tag: e.target.value}})}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -137,6 +186,7 @@ export default function SignUp() {
                                     id="main"
                                     name="main"
                                     size='4'
+                                    onChange={e => setUser({...user, data: {...user.data, main: e.target.value}})}
                                 >
                                     <option selected
                                             className={classes.option}
@@ -156,11 +206,12 @@ export default function SignUp() {
                             </Grid>
                         </Grid>
                         <Button
-                            type="submit"
+                           // type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            onClick={postUserData}
                         >
                             Sign Up
                         </Button>
@@ -177,6 +228,11 @@ export default function SignUp() {
                     <Copyright/>
                 </Box>
             </Container>
+            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>
+                <MuiAlert onClose={handleCloseAlert} elevation={6} variant="filled" severity={alertSeverity}>
+                    {alertMessage}
+                </MuiAlert>
+            </Snackbar>
         </div>
     );
 }

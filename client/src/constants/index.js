@@ -18,3 +18,10 @@ function importAll(r) {
 }
 
 export const STOCK_LOGOS = importAll(require.context('../assets/stockLogos', false, /\.(png|jpe?g|svg)$/));
+
+export const SNACKBAR_SEVERITY = {
+    error: 'error',
+    warning: 'warning',
+    info: 'info',
+    success: 'success'
+}

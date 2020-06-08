@@ -4,6 +4,7 @@ from models.user import User
 from models.match_up import MatchUp
 from models.game import Game
 from data.exceptions import *
+import re
 
 
 cluster = MongoClient('mongodb+srv://tamargoadam:Blackacre1@cluster0-kahtq.mongodb.net/test?retryWrites=true&w=majority')
@@ -28,6 +29,12 @@ def add_user(f_name, l_name, email, password, tag, main):
     :param main: user's main
     :return: n/a
     """
+    if '' in [f_name, l_name, email, password, tag, main]:
+        raise EmptyEntry()
+    if not re.search('^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$',email):
+        raise InvalidEmail(email)
+    if not re.search('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$', password):
+        raise InvalidPassword()
     if collection.find_one({"name": email}) is not None:
         raise UserAlreadyExists(email)
     collection.insert_one(User(f_name, l_name, email, password, tag, main).__dict__)
