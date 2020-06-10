@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,12 +8,13 @@ import Container from '@material-ui/core/Container';
 import Box from "@material-ui/core/Box";
 import Shine from "../../assets/shine.png";
 import Copyright from "../../components/copyright/copyright";
-import { CHARACTERS, STOCK_LOGOS, SNACKBAR_SEVERITY } from "../../constants"
+import { SNACKBAR_SEVERITY } from "../../constants"
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
 import CharacterSelect from '../../components/characterSelect/characterSelect'
 import StageScrollSelect from "../../components/stageScrollSelect/stageScrollSelect";
+import StockSlider from "../../components/stockSlider/stockSlider";
 
 const useStyles = makeStyles((theme) => ({
     back: {
@@ -95,11 +95,11 @@ export default function GameInput() {
     const postUserData = async () => {
         // Post to sign up api
         axios.post(
-            'http://127.0.0.1:5000/signup', game
+            'http://127.0.0.1:5000/gameInput', game
         ).then(response =>
             {
                 setAlertSeverity(SNACKBAR_SEVERITY.success)
-                setAlertMessage('Account successfully created!')
+                setAlertMessage('Game record successfully submitted!')
                 setOpenAlert(true);
             }
         ).catch(error =>
@@ -137,54 +137,14 @@ export default function GameInput() {
                             <Grid item xs={12}>
                                 <StageScrollSelect/>
                             </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    name="password"
-                                    label="Password"
-                                    type="password"
-                                    id="password"
-                                    autoComplete="current-password"
-                                    onChange={e => setGame({...game, data: {...game.data, password: e.target.value}})}
-                                />
+                            <Grid item xs={12} sm={4}>
+                                <StockSlider player="User"/>
                             </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    name="tag"
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    id="tag"
-                                    label="Tag"
-                                    onChange={e => setGame({...game, data: {...game.data, tag: e.target.value}})}
-                                />
+                            <Grid item xs={12} sm={4}>
+
                             </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <select
-                                    className={classes.select}
-                                    required
-                                    id="main"
-                                    name="main"
-                                    size='4'
-                                    onChange={e => setGame({...game, data: {...game.data, main: e.target.value}})}
-                                >
-                                    <option selected
-                                            className={classes.option}
-                                            style={{backgroundImage: "url("+STOCK_LOGOS["Smash Ball"]+")"}}
-                                    >
-                                        No Main
-                                    </option>
-                                    {CHARACTERS.map((char) =>
-                                        <option
-                                            className={classes.option}
-                                            style={{backgroundImage: "url("+STOCK_LOGOS[char]+")"}}
-                                        >
-                                            {char}
-                                        </option>
-                                    )}
-                                </select>
+                            <Grid item xs={12} sm={4}>
+                                <StockSlider player="Opponent"/>
                             </Grid>
                         </Grid>
                         <Button
