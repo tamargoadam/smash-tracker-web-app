@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,6 +13,8 @@ import { CHARACTERS, STOCK_LOGOS, SNACKBAR_SEVERITY } from "../../constants"
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
+import CharacterSelect from '../../components/characterSelect/characterSelect'
+import StageScrollSelect from "../../components/stageScrollSelect/stageScrollSelect";
 
 const useStyles = makeStyles((theme) => ({
     back: {
@@ -28,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
     container: {
         border: '12px solid #282c34',
         background: 'white',
-        borderRadius:20
+        borderRadius:20,
+        width: "70vmax"
     },
     paper: {
         marginTop: theme.spacing(8),
@@ -43,37 +45,47 @@ const useStyles = makeStyles((theme) => ({
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
     },
+    grid: {
+        alignContent: "center"
+    },
     select: {
         width: '100%',
         height: '100%',
-        borderRadius: '5px'
+        borderRadius: '5px',
+        zIndex: "-1"
+    },
+    optionTitle: {
+        textAlign: "center",
+        height: 25,
+        paddingTop: "3%"
     },
     option: {
         backgroundRepeat: "no-repeat",
         textAlign: "right",
-        height: 25
+        height: 25,
     },
     submit: {
         background: '#282c34',
         '&:hover': {
             background: "#4fafc9"
         },
-        margin: theme.spacing(3, 0, 2),
+        width: "100%",
+        margin: theme.spacing(5, 0, 2),
     },
 }));
 
 
-export default function SignUp() {
+export default function GameInput() {
     const classes = useStyles();
-    const [user, setUser] = useState(
+    const [game, setGame] = useState(
         {
             data: {
-                f_name: "",
-                l_name: "",
-                email: "",
-                password: "",
-                tag: "",
-                main: "No Main"
+                user_char: "",
+                opponent_char: "",
+                stage: "",
+                win: true,
+                user_stock: 4,
+                opponent_stock: 4
             }
         });
     const [openAlert, setOpenAlert] = React.useState(false);
@@ -83,13 +95,13 @@ export default function SignUp() {
     const postUserData = async () => {
         // Post to sign up api
         axios.post(
-            'http://127.0.0.1:5000/signup', user
+            'http://127.0.0.1:5000/signup', game
         ).then(response =>
-        {
-            setAlertSeverity(SNACKBAR_SEVERITY.success)
-            setAlertMessage('Account successfully created!')
-            setOpenAlert(true);
-        }
+            {
+                setAlertSeverity(SNACKBAR_SEVERITY.success)
+                setAlertMessage('Account successfully created!')
+                setOpenAlert(true);
+            }
         ).catch(error =>
         {
             setAlertSeverity(SNACKBAR_SEVERITY.error)
@@ -107,51 +119,23 @@ export default function SignUp() {
 
     return (
         <div className={classes.back}>
-            <Container className={classes.container} component="main" maxWidth="xs">
+            <Container className={classes.container} component="main">
                 <CssBaseline />
                 <div className={classes.paper}>
                     <img className={classes.logo} src={Shine}/>
                     <Typography component="h1" variant="h5">
-                        Sign up
+                        Enter Your Game Info
                     </Typography>
                     <form className={classes.form} noValidate>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    autoComplete="fname"
-                                    name="firstName"
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    id="firstName"
-                                    label="First Name"
-                                    autoFocus
-                                    onChange={e => setUser({...user, data: {...user.data, f_name: e.target.value}})}
-                                />
+                        <Grid container spacing={2} className={classes.grid}>
+                            <Grid item xs={12} sm={6} justify="left">
+                                <CharacterSelect placeholder="Select User Character..."/>
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <TextField
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    id="lastName"
-                                    label="Last Name"
-                                    name="lastName"
-                                    autoComplete="lname"
-                                    onChange={e => setUser({...user, data: {...user.data, l_name: e.target.value}})}
-                                />
+                                <CharacterSelect placeholder="Select Opponent Character..."/>
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
-                                    onChange={e => setUser({...user, data: {...user.data, email: e.target.value}})}
-                                />
+                                <StageScrollSelect/>
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
@@ -163,7 +147,7 @@ export default function SignUp() {
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
-                                    onChange={e => setUser({...user, data: {...user.data, password: e.target.value}})}
+                                    onChange={e => setGame({...game, data: {...game.data, password: e.target.value}})}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -174,7 +158,7 @@ export default function SignUp() {
                                     fullWidth
                                     id="tag"
                                     label="Tag"
-                                    onChange={e => setUser({...user, data: {...user.data, tag: e.target.value}})}
+                                    onChange={e => setGame({...game, data: {...game.data, tag: e.target.value}})}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -184,7 +168,7 @@ export default function SignUp() {
                                     id="main"
                                     name="main"
                                     size='4'
-                                    onChange={e => setUser({...user, data: {...user.data, main: e.target.value}})}
+                                    onChange={e => setGame({...game, data: {...game.data, main: e.target.value}})}
                                 >
                                     <option selected
                                             className={classes.option}
@@ -204,22 +188,15 @@ export default function SignUp() {
                             </Grid>
                         </Grid>
                         <Button
-                           // type="submit"
+                            // type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
                             className={classes.submit}
                             onClick={postUserData}
                         >
-                            Sign Up
+                            Submit Game
                         </Button>
-                        <Grid container justify="flex-end">
-                            <Grid item>
-                                <Link href="/signin" variant="body2">
-                                    Already have an account? Sign in
-                                </Link>
-                            </Grid>
-                        </Grid>
                     </form>
                 </div>
                 <Box mt={8}>

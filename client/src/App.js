@@ -11,6 +11,7 @@ import NotFound from "./views/404"
 import SignIn from "./views/signIn"
 import SignUp from "./views/signUp"
 import MatchUps from "./views/matchUps";
+import GameInput from "./views/gameInput"
 
 
 export default class App extends Component {
@@ -30,6 +31,7 @@ export default class App extends Component {
                         <Route exact path="/signin" component={SignIn}/>
                         <Route exact path="/signup" component={SignUp}/>
                         <Route exact path="/matchups" component={MatchUps}/>
+                        <Route exact path="/gameinput" component={GameInput}/>
                         <Route component={NotFound}/>
                     </Switch>
                 </Router>

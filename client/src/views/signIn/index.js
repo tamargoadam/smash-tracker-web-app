@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -12,6 +12,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Shine from '../../assets/shine.png';
 import Copyright from '../../components/copyright/copyright'
+import axios from "axios";
+import {SNACKBAR_SEVERITY} from "../../constants";
+import MuiAlert from "@material-ui/lab/Alert/Alert";
+import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -53,6 +57,39 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
     const classes = useStyles();
+    const [user, setUser] = useState(
+        {
+            data: {
+                email: "",
+                password: "",
+            }
+        });
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [alertMessage, setAlertMessage] = React.useState('');
+    const [alertSeverity, setAlertSeverity] = React.useState(SNACKBAR_SEVERITY.info);
+
+    const postUserData = async () => {
+        // Post to sign in api
+        axios.post(
+            'http://127.0.0.1:5000/signin', user
+        ).then(response =>
+            {
+                // handle sign in
+            }
+        ).catch(error =>
+        {
+            setAlertSeverity(SNACKBAR_SEVERITY.error)
+            setAlertMessage(error.response.data.message)
+            setOpenAlert(true);
+        });
+    }
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenAlert(false);
+    };
 
     return (
         <div className={classes.back}>
@@ -74,6 +111,7 @@ export default function SignIn() {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            onChange={e => setUser({...user, data: {...user.data, email: e.target.value}})}
                         />
                         <TextField
                             variant="outlined"
@@ -85,17 +123,18 @@ export default function SignIn() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            onChange={e => setUser({...user, data: {...user.data, password: e.target.value}})}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary"/>}
                             label="Remember me"
                         />
                         <Button
-                            type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            onClick={postUserData}
                         >
                             Sign In
                         </Button>
@@ -117,6 +156,11 @@ export default function SignIn() {
                     <Copyright/>
                 </Box>
             </Container>
+            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>
+                <MuiAlert onClose={handleCloseAlert} elevation={6} variant="filled" severity={alertSeverity}>
+                    {alertMessage}
+                </MuiAlert>
+            </Snackbar>
         </div>
     );
 }
