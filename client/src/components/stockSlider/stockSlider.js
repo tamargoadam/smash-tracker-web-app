@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles(() => ({

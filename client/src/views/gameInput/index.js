@@ -15,6 +15,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import CharacterSelect from '../../components/characterSelect/characterSelect'
 import StageScrollSelect from "../../components/stageScrollSelect/stageScrollSelect";
 import StockSlider from "../../components/stockSlider/stockSlider";
+import ToggleSwitch from "../../components/toggleSwitch/toggleSwitch";
 
 const useStyles = makeStyles((theme) => ({
     back: {
@@ -128,10 +129,11 @@ export default function GameInput() {
                     </Typography>
                     <form className={classes.form} noValidate>
                         <Grid container spacing={2} className={classes.grid}>
-                            <Grid item xs={12} sm={6} justify="left">
+                            <Grid item xs={12} sm={4} justify="left">
                                 <CharacterSelect placeholder="Select User Character..."/>
                             </Grid>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={12} sm={4}/>
+                            <Grid item xs={12} sm={4}>
                                 <CharacterSelect placeholder="Select Opponent Character..."/>
                             </Grid>
                             <Grid item xs={12}>
@@ -141,7 +143,7 @@ export default function GameInput() {
                                 <StockSlider player="User"/>
                             </Grid>
                             <Grid item xs={12} sm={4}>
-
+                                <ToggleSwitch toggledText="Win" notToggledText="Loss"/>
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <StockSlider player="Opponent"/>
