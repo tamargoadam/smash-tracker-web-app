@@ -7,12 +7,14 @@ const useStyles = makeStyles(() => ({
         backgroundColor: "#333",
         overflow: "auto",
         whiteSpace: "nowrap",
+        border: "8px solid #333",
         borderRadius: "8px",
         "& div": {
             display: "inline-block",
-            border: "1px solid white",
+            border: "0px",
             '&:hover': {
-                background: "#4fafc9"
+                background: "#4fafc9",
+                border: "#4fafc9",
             },
             "& div": {
                 border: "0px",
@@ -24,21 +26,36 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-let menuItems = []
+const selectedStyle={
+    border: "4px solid #4fafc9"
+};
+const notSelectedStyle={
+    border: "4px solid #333"
+};
+
+let menuItems = [];
 LEGAL_STAGES.map((stage) =>
     menuItems.push(
-    <div>
-        <img src={LEGAL_STAGE_IMAGES[stage]} height="150px" width="200px"/>
-        <div>{stage}</div>
-    </div>
+        {
+            option: <img src={LEGAL_STAGE_IMAGES[stage]} height="150px" width="200px"/>,
+            value: stage
+        }
     )
 );
 export default function StageScrollSelect() {
     const [selected, setSelected] = useState(LEGAL_STAGES[0]);
     const classes = useStyles();
+
     return (
         <div className={classes.scrollMenu}>
-            {menuItems.map((item) => {return item;})}
+            {menuItems.map((item) =>
+                <div
+                    onClick={() => setSelected(item.value)}
+                    style={item.value == selected ? selectedStyle : notSelectedStyle}
+                >
+                    {item.option}
+                    <div>{item.value}</div>
+                </div>)}
         </div>
     );
 }
