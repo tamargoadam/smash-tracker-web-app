@@ -41,7 +41,7 @@ const toggleFalseStyle = {
 
 export default function ToggleSwitch(props) {
     const classes = useStyles();
-    const { toggledText, notToggledText} = props;
+    const { toggledText, notToggledText, setTrue} = props;
     const [toggle, setToggle] = React.useState(true);
 
     return (
@@ -50,7 +50,11 @@ export default function ToggleSwitch(props) {
                 <button type="button"
                         className={classes.toggledButton}
                         style={toggle ? toggleTrueStyle : {}}
-                        onClick={() => {setToggle(true);}}
+                        onClick={() =>
+                        {
+                            setToggle(true);
+                            setTrue(true);
+                        }}
                 >
                     {toggledText}
                 </button>
@@ -59,7 +63,11 @@ export default function ToggleSwitch(props) {
                 <button type="button"
                         className={classes.notToggledButton}
                         style={!toggle ? toggleFalseStyle : {}}
-                        onClick={() => {setToggle(false);}}
+                        onClick={() =>
+                        {
+                            setToggle(false);
+                            setTrue(false);
+                        }}
                 >
                     {notToggledText}
                 </button>

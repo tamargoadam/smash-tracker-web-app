@@ -42,15 +42,22 @@ LEGAL_STAGES.map((stage) =>
         }
     )
 );
-export default function StageScrollSelect() {
+export default function StageScrollSelect(props) {
     const [selected, setSelected] = useState(LEGAL_STAGES[0]);
     const classes = useStyles();
+    const { setStage } = props;
 
     return (
         <div className={classes.scrollMenu}>
             {menuItems.map((item) =>
                 <div
-                    onClick={() => setSelected(item.value)}
+                    onClick={
+                        () =>
+                        {
+                            setSelected(item.value);
+                            setStage(item.value);
+                        }
+                    }
                     style={item.value == selected ? selectedStyle : notSelectedStyle}
                 >
                     {item.option}

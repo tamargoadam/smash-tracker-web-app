@@ -39,13 +39,24 @@ const useStyles = makeStyles(() => ({
 
 export default function StockSlider(props) {
     const classes = useStyles();
-    const { player } = props;
+    const { player, setStocks } = props;
     const [selected, setSelected] = useState(0);
 
     return (
         <div>
             <p>Stocks remaining for player, {player}:</p>
-            <input type="range" min="0" max="4" value={selected} id="stocks" className={classes.slider} onChange={e => setSelected(e.target.value)}/>
+            <input
+                type="range"
+                min="0"
+                max="4"
+                value={selected}
+                id="stocks"
+                className={classes.slider}
+                onChange={e => {
+                    setSelected(e.target.value);
+                    setStocks(e.target.value);
+                }}
+            />
             {selected}
         </div>
     );

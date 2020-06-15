@@ -23,7 +23,7 @@ CHARACTERS.map((char) =>
 );
 
 export default function CharacterSelect(props) {
-    const { placeholder } = props;
+    const { placeholder, setChar } = props;
     const options = characters;
 
     return (
@@ -37,6 +37,7 @@ export default function CharacterSelect(props) {
                 isSearchable={true}
                 name="character"
                 options={options}
+                onChange={e => setChar(e.value)}
             />
     );
 }

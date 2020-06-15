@@ -85,13 +85,38 @@ export default function GameInput() {
                 opponent_char: "",
                 stage: "",
                 win: true,
-                user_stock: 4,
-                opponent_stock: 4
+                user_stock: 0,
+                opponent_stock: 0
             }
         });
     const [openAlert, setOpenAlert] = React.useState(false);
     const [alertMessage, setAlertMessage] = React.useState('');
     const [alertSeverity, setAlertSeverity] = React.useState(SNACKBAR_SEVERITY.info);
+
+    // Functions to set state on change in child component
+    function onChangeUserChar(char) {
+        setGame({...game, data: {...game.data, user_char: char}})
+    }
+
+    function onChangeOpponentChar(char) {
+        setGame({...game, data: {...game.data, opponent_char: char}})
+    }
+
+    function onChangeUserStocks(stocks) {
+        setGame({...game, data: {...game.data, user_stock: stocks}})
+    }
+
+    function onChangeOpponentStocks(stocks) {
+        setGame({...game, data: {...game.data, opponent_stock: stocks}})
+    }
+
+    function onChangeStage(stage) {
+        setGame({...game, data: {...game.data, stage: stage}})
+    }
+
+    function onChangeWin(win) {
+        setGame({...game, data: {...game.data, win: win}})
+    }
 
     const postUserData = async () => {
         // Post to sign up api
@@ -130,23 +155,41 @@ export default function GameInput() {
                     <form className={classes.form} noValidate>
                         <Grid container spacing={2} className={classes.grid}>
                             <Grid item xs={12} sm={4} justify="left">
-                                <CharacterSelect placeholder="Select User Character..."/>
+                                <CharacterSelect
+                                    placeholder="Select User Character..."
+                                    setChar={onChangeUserChar}
+                                />
                             </Grid>
                             <Grid item xs={12} sm={4}/>
                             <Grid item xs={12} sm={4}>
-                                <CharacterSelect placeholder="Select Opponent Character..."/>
+                                <CharacterSelect
+                                    placeholder="Select Opponent Character..."
+                                    setChar={onChangeOpponentChar}
+                                />
                             </Grid>
                             <Grid item xs={12}>
-                                <StageScrollSelect/>
+                                <StageScrollSelect
+                                    setStage={onChangeStage}
+                                />
                             </Grid>
                             <Grid item xs={12} sm={4}>
-                                <StockSlider player="User"/>
+                                <StockSlider
+                                    player="User"
+                                    setStocks={onChangeUserStocks}
+                                />
                             </Grid>
                             <Grid item xs={12} sm={4}>
-                                <ToggleSwitch toggledText="Win" notToggledText="Loss"/>
+                                <ToggleSwitch
+                                    toggledText="Win"
+                                    notToggledText="Loss"
+                                    setTrue={onChangeWin}
+                                />
                             </Grid>
                             <Grid item xs={12} sm={4}>
-                                <StockSlider player="Opponent"/>
+                                <StockSlider
+                                    player="Opponent"
+                                    setStocks={onChangeOpponentStocks}
+                                />
                             </Grid>
                         </Grid>
                         <Button
@@ -155,7 +198,7 @@ export default function GameInput() {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
-                            onClick={postUserData}
+                            onClick={console.log(game.data)}
                         >
                             Submit Game
                         </Button>
