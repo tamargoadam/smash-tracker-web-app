@@ -8,7 +8,7 @@ import Container from '@material-ui/core/Container';
 import Box from "@material-ui/core/Box";
 import Shine from "../../assets/shine.png";
 import Copyright from "../../components/copyright/copyright";
-import { SNACKBAR_SEVERITY } from "../../constants"
+import {LEGAL_STAGES, SNACKBAR_SEVERITY} from "../../constants"
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
@@ -83,7 +83,7 @@ export default function GameInput() {
             data: {
                 user_char: "",
                 opponent_char: "",
-                stage: "",
+                stage: LEGAL_STAGES[0],
                 win: true,
                 user_stock: 0,
                 opponent_stock: 0
@@ -93,31 +93,12 @@ export default function GameInput() {
     const [alertMessage, setAlertMessage] = React.useState('');
     const [alertSeverity, setAlertSeverity] = React.useState(SNACKBAR_SEVERITY.info);
 
-    // Functions to set state on change in child component
-    function onChangeUserChar(char) {
-        setGame({...game, data: {...game.data, user_char: char}})
+    // Function to set state on change in child component
+    function onChangeGameValue(key, val) {
+        setGame({...game, data: {...game.data, [key]: val}})
     }
 
-    function onChangeOpponentChar(char) {
-        setGame({...game, data: {...game.data, opponent_char: char}})
-    }
-
-    function onChangeUserStocks(stocks) {
-        setGame({...game, data: {...game.data, user_stock: stocks}})
-    }
-
-    function onChangeOpponentStocks(stocks) {
-        setGame({...game, data: {...game.data, opponent_stock: stocks}})
-    }
-
-    function onChangeStage(stage) {
-        setGame({...game, data: {...game.data, stage: stage}})
-    }
-
-    function onChangeWin(win) {
-        setGame({...game, data: {...game.data, win: win}})
-    }
-
+    // Send game data to server
     const postUserData = async () => {
         // Post to sign up api
         axios.post(
@@ -157,38 +138,42 @@ export default function GameInput() {
                             <Grid item xs={12} sm={4} justify="left">
                                 <CharacterSelect
                                     placeholder="Select User Character..."
-                                    setChar={onChangeUserChar}
+                                    setChar={onChangeGameValue}
+                                    isUser={true}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={4}/>
                             <Grid item xs={12} sm={4}>
                                 <CharacterSelect
                                     placeholder="Select Opponent Character..."
-                                    setChar={onChangeOpponentChar}
+                                    setChar={onChangeGameValue}
+                                    isUser={false}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <StageScrollSelect
-                                    setStage={onChangeStage}
+                                    setStage={onChangeGameValue}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <StockSlider
                                     player="User"
-                                    setStocks={onChangeUserStocks}
+                                    setStocks={onChangeGameValue}
+                                    isUser={true}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <ToggleSwitch
                                     toggledText="Win"
                                     notToggledText="Loss"
-                                    setTrue={onChangeWin}
+                                    setTrue={onChangeGameValue}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <StockSlider
                                     player="Opponent"
-                                    setStocks={onChangeOpponentStocks}
+                                    setStocks={onChangeGameValue}
+                                    isUser={false}
                                 />
                             </Grid>
                         </Grid>

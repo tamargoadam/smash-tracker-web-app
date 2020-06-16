@@ -23,6 +23,16 @@ export const SNACKBAR_SEVERITY = {
 }
 
 
+// Game Obj Keys
+export const GAME_DATA = {
+    user_char: "user_char",
+    opponent_char: "opponent_char",
+    stage: "stage",
+    win: "win",
+    user_stock: "user_stock",
+    opponent_stock: "opponent_stock"
+}
+
 // Mapping helper function
 function wordToUppercase(txt) {
     if (txt == "of")

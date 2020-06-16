@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { LEGAL_STAGE_IMAGES, LEGAL_STAGES } from "../../constants";
+import { LEGAL_STAGE_IMAGES, LEGAL_STAGES, GAME_DATA } from "../../constants";
 
 const useStyles = makeStyles(() => ({
     scrollMenu: {
@@ -55,7 +55,7 @@ export default function StageScrollSelect(props) {
                         () =>
                         {
                             setSelected(item.value);
-                            setStage(item.value);
+                            setStage(GAME_DATA.stage, item.value);
                         }
                     }
                     style={item.value == selected ? selectedStyle : notSelectedStyle}

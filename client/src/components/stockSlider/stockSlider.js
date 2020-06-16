@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from "prop-types";
+import { GAME_DATA } from "../../constants";
 
 const useStyles = makeStyles(() => ({
     slider: {
@@ -39,7 +40,7 @@ const useStyles = makeStyles(() => ({
 
 export default function StockSlider(props) {
     const classes = useStyles();
-    const { player, setStocks } = props;
+    const { player, setStocks, isUser } = props;
     const [selected, setSelected] = useState(0);
 
     return (
@@ -54,7 +55,7 @@ export default function StockSlider(props) {
                 className={classes.slider}
                 onChange={e => {
                     setSelected(e.target.value);
-                    setStocks(e.target.value);
+                    setStocks(isUser ? GAME_DATA.user_stock : GAME_DATA.opponent_stock, e.target.value);
                 }}
             />
             {selected}

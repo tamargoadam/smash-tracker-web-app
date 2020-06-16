@@ -2,6 +2,7 @@ import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from "prop-types";
+import { GAME_DATA } from "../../constants";
 
 const useStyles = makeStyles(() => ({
         toggledButton: {
@@ -53,7 +54,7 @@ export default function ToggleSwitch(props) {
                         onClick={() =>
                         {
                             setToggle(true);
-                            setTrue(true);
+                            setTrue(GAME_DATA.win, true);
                         }}
                 >
                     {toggledText}
@@ -66,7 +67,7 @@ export default function ToggleSwitch(props) {
                         onClick={() =>
                         {
                             setToggle(false);
-                            setTrue(false);
+                            setTrue(GAME_DATA.win, false);
                         }}
                 >
                     {notToggledText}
