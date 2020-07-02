@@ -40,6 +40,21 @@ def add_user(f_name, l_name, email, password, tag, main):
     collection.insert_one(User(f_name, l_name, email, password, tag, main).__dict__)
 
 
+def get_user(email, password):
+    """
+    get all data for user
+
+    :param email: user email
+    :param password: user password
+    :return: user object
+    """
+    u = collection.find_one({"$and": [{"email": email}, {"password": password}]})
+    if u is None:
+        raise UserNotFound(email)
+    user = User(u['f_name'], u['l_name'], u['email'], u['password'], u['tag'], u['main'])
+    return user.__dict__
+
+
 def remove_user(user):
     """
     removes user from 'users' collection based on email

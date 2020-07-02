@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {
     BrowserRouter as Router,
     Route,
-    Switch
+    Switch,
+    useHistory
 } from "react-router-dom";
 
 //Components
@@ -14,28 +15,20 @@ import MatchUps from "./views/matchUps";
 import GameInput from "./views/gameInput"
 
 
-export default class App extends Component {
+export default function App() {
+    const [currentUser, setCurrentUser] = useState(null);
+    let history = useHistory();
 
-    handleRoute = e => {
-        this.setState({
-            currentUrl: e.url
-        });
-    };
-
-    render() {
-        return (
-            <div id="app">
-                <Router onChange={this.handleRoute}>
-                    <Switch>
-                        <Route exact path="/" component={Home}/>
-                        <Route exact path="/signin" component={SignIn}/>
-                        <Route exact path="/signup" component={SignUp}/>
-                        <Route exact path="/matchups" component={MatchUps}/>
-                        <Route exact path="/gameinput" component={GameInput}/>
-                        <Route component={NotFound}/>
-                    </Switch>
-                </Router>
-            </div>
-        );
-    }
+    return (
+        <div id="app">
+            <Switch>
+                <Route exact path="/" render={() => <Home/>}/>
+                <Route exact path="/signin" render={() => <SignIn setCurrentUser={setCurrentUser} history={history}/>}/>
+                <Route exact path="/signup" render={() => <SignUp/>}/>
+                <Route exact path="/matchups" render={() => <MatchUps currentUser={currentUser}/>}/>
+                <Route exact path="/gameinput" render={() => <GameInput/>}/>
+                <Route component={NotFound}/>
+            </Switch>
+        </div>
+    );
 }

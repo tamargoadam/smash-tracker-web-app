@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, History} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignIn() {
+export default function SignIn(props) {
     const classes = useStyles();
     const [user, setUser] = useState(
         {
@@ -74,10 +74,13 @@ export default function SignIn() {
             'http://127.0.0.1:5000/signin', user
         ).then(response =>
             {
-                // handle sign in
+                console.log(props)
+                props.setCurrentUser(response.data.email)
+                props.history.push('/matchups')
             }
         ).catch(error =>
         {
+            console.log(error)
             setAlertSeverity(SNACKBAR_SEVERITY.error)
             setAlertMessage(error.response.data.message)
             setOpenAlert(true);

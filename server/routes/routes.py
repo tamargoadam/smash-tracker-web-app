@@ -26,11 +26,23 @@ def post_match_ups(user=None):
 
 
 @app.route('/signup', methods=['GET', 'POST'])
-def get_user_data():
+def set_user_data():
     data = request.get_json()["data"]
     try:
         db.add_user(data[F_NAME], data[L_NAME], data[EMAIL], data[PASSWORD], data[TAG], data[MAIN])
         response = Response('', 204)
+    except Error as e:
+        response = Response(json.dumps(e.__dict__), 400)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+
+@app.route('/signin', methods=['POST'])
+def login_user():
+    data = request.get_json()["data"]
+    try:
+        user = db.get_user(data[EMAIL], data[PASSWORD])
+        response = Response(json.dumps(user), 200)
     except Error as e:
         response = Response(json.dumps(e.__dict__), 400)
     response.headers['Access-Control-Allow-Origin'] = '*'

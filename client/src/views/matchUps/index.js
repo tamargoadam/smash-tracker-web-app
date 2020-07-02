@@ -34,7 +34,7 @@ export default function MatchUps(props) {
         const fetchMatchUps = async () => {
             // Call the matchups api
             const response = await axios(
-                'http://127.0.0.1:5000/matchups/atamargo@ufl.edu',
+                `http://127.0.0.1:5000/matchups/${props.currentUser}`,
             );
             // Set the topics state with the response data
             setMatchUps(response.data);
