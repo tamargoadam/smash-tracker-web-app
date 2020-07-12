@@ -70,8 +70,8 @@ export default function Home() {
                 <p>
                     Welcome to Smash Tracker!
                 </p>
-                <Link className={classes.link} to="/signin">
-                    Sign in here to track your play
+                <Link className={classes.link} to="/matchups">
+                    Track your play and view previous matches here!
                 </Link>
             </header>
         </div>

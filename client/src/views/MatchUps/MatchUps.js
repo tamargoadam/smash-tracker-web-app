@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from "react"
 import {makeStyles} from "@material-ui/core/styles";
-import axios from 'axios'
-import MatchUpTable from '../../components/matchUpTable/matchUpTable'
+import MatchUpTable from '../../components/MatchUpTable/MatchUpTable'
+import {fetchMatchUps} from "../../utils/Requests";
+import {getToken, getUser} from "../../utils/AuthRequests";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -31,16 +32,12 @@ export default function MatchUps(props) {
     const classes = useStyles();
 
     useEffect( () => {
-        const fetchMatchUps = async () => {
-            // Call the matchups api
-            const response = await axios(
-                `http://127.0.0.1:5000/matchups/${props.currentUser}`,
-            );
+        console.log(getToken(), getUser());
+        fetchMatchUps(getToken(), getUser()).then((response) => {
             // Set the topics state with the response data
-            setMatchUps(response.data);
-        }
+            setMatchUps(response);
+        })
 
-        fetchMatchUps()
     }, [])
 
     // Render the topics

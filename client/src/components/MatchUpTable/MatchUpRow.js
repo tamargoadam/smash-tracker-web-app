@@ -12,7 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { STOCK_LOGOS } from "../../constants";
+import { STOCK_LOGOS } from "../../constants/Constants";
 
 const useStyles = makeStyles({
     root: {

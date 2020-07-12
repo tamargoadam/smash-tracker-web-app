@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from "prop-types";
-import { GAME_DATA } from "../../constants";
+import { GAME_DATA } from "../../constants/Constants";
 
 const useStyles = makeStyles(() => ({
     slider: {

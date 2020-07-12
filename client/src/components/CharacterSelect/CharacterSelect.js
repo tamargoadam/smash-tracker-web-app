@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
-import {CHARACTERS, STOCK_LOGOS, GAME_DATA} from "../../constants";
+import {CHARACTERS, STOCK_LOGOS, GAME_DATA} from "../../constants/Constants";
 import PropTypes from 'prop-types';
 
 const selectStyles = {

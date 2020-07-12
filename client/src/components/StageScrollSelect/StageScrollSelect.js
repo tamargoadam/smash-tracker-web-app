@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { LEGAL_STAGE_IMAGES, LEGAL_STAGES, GAME_DATA } from "../../constants";
+import { LEGAL_STAGE_IMAGES, LEGAL_STAGES, GAME_DATA } from "../../constants/Constants";
 
 const useStyles = makeStyles(() => ({
     scrollMenu: {

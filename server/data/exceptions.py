@@ -14,6 +14,16 @@ class UserNotFound(Error):
         self.message = 'User with email, \'{0}\', not found.'.format(email)
 
 
+class SignInFailed(Error):
+    def __init__(self):
+        self.message = 'Sign in unsuccessful. Check that your email and password are correct and try again.'
+
+
+class InvalidAuth(Error):
+    def __init__(self):
+        self.message = 'Authentication was unsuccessful.'
+
+
 class GameNotFound(Error):
     def __init__(self, user, opponent):
         self.message = 'No games between users \'{0}\' and \'{1}\' were found.'.format(user, opponent)

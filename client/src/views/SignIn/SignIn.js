@@ -11,11 +11,13 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Shine from '../../assets/shine.png';
-import Copyright from '../../components/copyright/copyright'
+import Copyright from '../../components/Copyright/Copyright'
 import axios from "axios";
-import {SNACKBAR_SEVERITY} from "../../constants";
+import {SNACKBAR_SEVERITY} from "../../constants/Constants";
 import MuiAlert from "@material-ui/lab/Alert/Alert";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
+import {postUserData} from "../../utils/Requests"
+import {setUserSession} from "../../utils/AuthRequests"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -68,24 +70,21 @@ export default function SignIn(props) {
     const [alertMessage, setAlertMessage] = React.useState('');
     const [alertSeverity, setAlertSeverity] = React.useState(SNACKBAR_SEVERITY.info);
 
-    const postUserData = async () => {
+    const handleLogin = async () => {
         // Post to sign in api
-        axios.post(
-            'http://127.0.0.1:5000/signin', user
-        ).then(response =>
-            {
-                console.log(props)
-                props.setCurrentUser(response.data.email)
-                props.history.push('/matchups')
-            }
-        ).catch(error =>
-        {
-            console.log(error)
-            setAlertSeverity(SNACKBAR_SEVERITY.error)
-            setAlertMessage(error.response.data.message)
+        try {
+            const response = await postUserData(user);
+            console.log(response);
+            setUserSession(response.jwt, response.user);
+            props.history.push('/matchups')
+        }
+        catch(error){
+            console.log(error);
+            setAlertSeverity(SNACKBAR_SEVERITY.error);
+            setAlertMessage(error.response.message);
             setOpenAlert(true);
-        });
-    }
+        };
+    };
 
     const handleCloseAlert = (event, reason) => {
         if (reason === 'clickaway') {
@@ -137,7 +136,7 @@ export default function SignIn(props) {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
-                            onClick={postUserData}
+                            onClick={handleLogin}
                         >
                             Sign In
                         </Button>

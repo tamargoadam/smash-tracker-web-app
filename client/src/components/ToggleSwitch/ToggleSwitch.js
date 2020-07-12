@@ -2,7 +2,7 @@ import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from "prop-types";
-import { GAME_DATA } from "../../constants";
+import { GAME_DATA } from "../../constants/Constants";
 
 const useStyles = makeStyles(() => ({
         toggledButton: {

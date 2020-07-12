@@ -9,8 +9,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Box from "@material-ui/core/Box";
 import Shine from "../../assets/shine.png";
-import Copyright from "../../components/copyright/copyright";
-import { CHARACTERS, STOCK_LOGOS, SNACKBAR_SEVERITY } from "../../constants"
+import Copyright from "../../components/Copyright/Copyright";
+import { CHARACTERS, STOCK_LOGOS, SNACKBAR_SEVERITY } from "../../constants/Constants"
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
