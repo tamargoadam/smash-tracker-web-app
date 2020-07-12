@@ -6,8 +6,8 @@ from models.game import Game
 from data.exceptions import *
 import re
 
-
-cluster = MongoClient('mongodb+srv://tamargoadam:Blackacre1@cluster0-kahtq.mongodb.net/test?retryWrites=true&w=majority')
+cluster = MongoClient(
+    'mongodb+srv://tamargoadam:Blackacre1@cluster0-kahtq.mongodb.net/test?retryWrites=true&w=majority')
 db = cluster["melee"]
 collection = db["users"]
 
@@ -31,7 +31,7 @@ def add_user(f_name, l_name, email, password, tag, main):
     """
     if '' in [f_name, l_name, email, password, tag, main]:
         raise EmptyEntry()
-    if not re.search('^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$',email):
+    if not re.search('^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$', email):
         raise InvalidEmail(email)
     if not re.search('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$', password):
         raise InvalidPassword()
@@ -177,25 +177,25 @@ def add_game(user: str, user_char: str, opponent: str, opponent_char: str,
                           {"$push":
                               {
                                   "match_ups.$.games": Game(_id, user_char, opponent_char, stage,
-                                                              win, user_stock, opponent_stock, True, False).__dict__
+                                                            win, user_stock, opponent_stock, True, False).__dict__
                               }})
     collection.update_one({"email": opponent, "match_ups.opponent": user},
                           {"$push":
                               {
                                   "match_ups.$.games": Game(_id, opponent_char, user_char, stage,
-                                                              not win, opponent_stock, user_stock, False, True).__dict__
+                                                            not win, opponent_stock, user_stock, False, True).__dict__
                               }})
 
 
 def approve_game(user: str, opponent: str, game_ids: list):
     user_match_ups = collection.find_one({"email": user},
-                                        {"match_ups": {"$elemMatch": {"opponent": opponent}}})["match_ups"]
+                                         {"match_ups": {"$elemMatch": {"opponent": opponent}}})["match_ups"]
     for match_up in user_match_ups:
         if match_up["opponent"] == opponent:
             user_match_up = match_up
             break
     opponent_match_ups = collection.find_one({"email": opponent},
-                                            {"match_ups": {"$elemMatch": {"opponent": user}}})["match_ups"]
+                                             {"match_ups": {"$elemMatch": {"opponent": user}}})["match_ups"]
     for match_up in opponent_match_ups:
         if match_up["opponent"] == user:
             opponent_match_up = match_up
@@ -244,7 +244,8 @@ def get_all_match_ups(email):
         games = []
         for game in match_up["games"]:
             # add game obj to games
-            games.append(Game(game["_id"], game["user_char"], game["opponent_char"], game["stage"], game["win"], game["user_stock"],
+            games.append(Game(game["_id"], game["user_char"], game["opponent_char"], game["stage"], game["win"],
+                              game["user_stock"],
                               game["opponent_stock"], game["user_approved"], game["opponent_approved"], game["date"]))
         match_ups.append(MatchUp(match_up["opponent"], match_up["opponent_tag"], match_up["wins"],
                                  match_up["losses"], games))

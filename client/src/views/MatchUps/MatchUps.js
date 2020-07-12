@@ -38,7 +38,7 @@ export default function MatchUps(props) {
             setMatchUps(response);
         })
 
-    }, [])
+    }, []);
 
     // Render the topics
     return (

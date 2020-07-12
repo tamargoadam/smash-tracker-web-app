@@ -10,7 +10,7 @@ def get_encoded_jwt(email, password):
     return jwt.encode({'email': email, 'password': password}, SECRET_KEY, algorithm='HS256')
 
 
-def check_valid_auth(auth: str, user: str):
+def get_user_by_auth(auth: str):
     """
     Decode jwt payload
     Verify that user requested is user on payload
@@ -18,13 +18,12 @@ def check_valid_auth(auth: str, user: str):
 
     :param auth: Authorization header `Bearer ${jwt}`
     :param user: user email
+    :return: User object
     """
     a = auth.split("Bearer ", 1)[1]
     payload = jwt.decode(a, SECRET_KEY, algorithm='HS256')
     try:
-        u = get_user(payload[EMAIL], payload[PASSWORD])
-        if payload[EMAIL] != user:
-            raise Error
+        return get_user(payload[EMAIL], payload[PASSWORD])
     except Error:
         raise InvalidAuth
     return

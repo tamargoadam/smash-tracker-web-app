@@ -16,6 +16,8 @@ import CharacterSelect from '../../components/CharacterSelect/CharacterSelect'
 import StageScrollSelect from "../../components/StageScrollSelect/StageScrollSelect";
 import StockSlider from "../../components/StockSlider/StockSlider";
 import ToggleSwitch from "../../components/ToggleSwitch/ToggleSwitch";
+import {postGameData} from "../../utils/Requests";
+import {getToken} from "../../utils/AuthRequests";
 
 const useStyles = makeStyles((theme) => ({
     back: {
@@ -78,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GameInput() {
     const classes = useStyles();
+    // TODO: ADD USER AND OPPONENT TO GAME STATE
     const [game, setGame] = useState(
         {
             data: {
@@ -99,11 +102,9 @@ export default function GameInput() {
     }
 
     // Send game data to server
-    const postUserData = async () => {
+    const handleSubmit = async () => {
         // Post to sign up api
-        axios.post(
-            'http://127.0.0.1:5000/gameInput', game
-        ).then(response =>
+        postGameData(getToken(), game).then(() =>
             {
                 setAlertSeverity(SNACKBAR_SEVERITY.success)
                 setAlertMessage('Game record successfully submitted!')
@@ -112,10 +113,10 @@ export default function GameInput() {
         ).catch(error =>
         {
             setAlertSeverity(SNACKBAR_SEVERITY.error)
-            setAlertMessage(error.response.data.message)
+            setAlertMessage(error.message)
             setOpenAlert(true);
         });
-    }
+    };
 
     const handleCloseAlert = (event, reason) => {
         if (reason === 'clickaway') {
@@ -183,7 +184,7 @@ export default function GameInput() {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
-                            onClick={console.log(game.data)}
+                            onClick={handleSubmit}
                         >
                             Submit Game
                         </Button>

@@ -22,7 +22,7 @@ def set_user_data():
     return response
 
 
-@app.route('/signin', methods=['POST'])
+@app.route('/signin', methods=['GET', 'POST'])
 def login_user():
     data = request.get_json()["data"]
     try:
@@ -35,20 +35,35 @@ def login_user():
     return response
 
 
-@app.route('/matchups')
-@app.route('/matchups/<user>')
-def post_match_ups(user=None):
+@app.route('/matchups', methods=['GET', 'POST'])
+def post_match_ups():
     """
-    post all match ups for user 'user'
-    example url extension: '/matchups/atamargo@ufl.edu'
+    post all match ups for user
     """
     try:
-        check_valid_auth(request.headers['Authorization'], user)
-        match_ups = db.get_all_match_ups(user)
+        user = get_user_by_auth(request.headers['Authorization'])
+        match_ups = db.get_all_match_ups(user[EMAIL])
         serializable_match_ups = []
         for match_up in match_ups:
             serializable_match_ups.append(match_up.dict())
         response = Response(json.dumps(serializable_match_ups), 200)
+    except Error as e:
+        response = Response(json.dumps(e.__dict__), 400)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+
+@app.route('/gameinput', methods=['GET', 'POST'])
+def add_game():
+    """
+    add a game's data to db
+    """
+    game = request.get_json()["data"]
+    try:
+        user = get_user_by_auth(request.headers['Authorization'])
+        db.add_game(game[EMAIL], game[USER_CHAR], game[OPPONENT], game[OPPONENT_CHAR],
+                    game[STAGE], game[WIN], game[USER_STOCK], game[OPPONENT_STOCK])
+        response = Response(200)
     except Error as e:
         response = Response(json.dumps(e.__dict__), 400)
     response.headers['Access-Control-Allow-Origin'] = '*'
