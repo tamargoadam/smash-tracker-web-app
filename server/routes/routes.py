@@ -61,7 +61,7 @@ def add_game():
     game = request.get_json()["data"]
     try:
         user = get_user_by_auth(request.headers['Authorization'])
-        db.add_game(game[EMAIL], game[USER_CHAR], game[OPPONENT], game[OPPONENT_CHAR],
+        db.add_game(user[EMAIL], game[USER_CHAR], game[OPPONENT], game[OPPONENT_CHAR],
                     game[STAGE], game[WIN], game[USER_STOCK], game[OPPONENT_STOCK])
         response = Response(200)
     except Error as e:

@@ -18,6 +18,7 @@ import StockSlider from "../../components/StockSlider/StockSlider";
 import ToggleSwitch from "../../components/ToggleSwitch/ToggleSwitch";
 import {postGameData} from "../../utils/Requests";
 import {getToken} from "../../utils/AuthRequests";
+import NavigationDrawer from "../../components/NavigationDrawer/NavigationDrawer";
 
 const useStyles = makeStyles((theme) => ({
     back: {
@@ -80,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GameInput() {
     const classes = useStyles();
-    // TODO: ADD USER AND OPPONENT TO GAME STATE
+    // TODO: ADD OPPONENT TO GAME STATE
     const [game, setGame] = useState(
         {
             data: {
@@ -127,6 +128,7 @@ export default function GameInput() {
 
     return (
         <div className={classes.back}>
+            <NavigationDrawer/>
             <Container className={classes.container} component="main">
                 <CssBaseline />
                 <div className={classes.paper}>

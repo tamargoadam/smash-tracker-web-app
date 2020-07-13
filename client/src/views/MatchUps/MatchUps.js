@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react"
 import {makeStyles} from "@material-ui/core/styles";
 import MatchUpTable from '../../components/MatchUpTable/MatchUpTable'
+import NavigationDrawer from '../../components/NavigationDrawer/NavigationDrawer'
 import {fetchMatchUps} from "../../utils/Requests";
 import {getToken, getUser} from "../../utils/AuthRequests";
 
@@ -43,6 +44,7 @@ export default function MatchUps(props) {
     // Render the topics
     return (
         <div className={classes.container}>
+            <NavigationDrawer/>
             <h2 className={classes.head}>Your Match Ups</h2>
             <div className={classes.table} >
                 <MatchUpTable match_ups={matchUps}/>
