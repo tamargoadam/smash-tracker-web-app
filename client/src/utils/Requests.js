@@ -1,5 +1,5 @@
 import axios from "axios";
-import SERVER from "./Hosts"
+import {SERVER} from "./Hosts"
 
 export const fetchMatchUps = async (jwt) => (await axios.get(`${SERVER}/matchups`, {
     headers: {

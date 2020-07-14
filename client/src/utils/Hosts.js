@@ -1,5 +1,5 @@
 import development from './config/development.json'
-import production from './config/production.json'
+import production from './config/product.json'
 
 const getHosts = () => {
     const { hostname } = window.location;
