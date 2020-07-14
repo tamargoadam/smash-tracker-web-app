@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 
 export default function MatchUpRow(props) {
     const { row } = props;
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
     const classes = useStyles();
 
     return (
