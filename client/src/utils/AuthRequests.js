@@ -5,13 +5,18 @@ export const getToken = () => {
 
 // return user from session storage
 export const getUser = () => {
-    return sessionStorage.getItem('user') || null;
+    return JSON.parse(sessionStorage.getItem('user')) || null;
 };
 
 // set the token and user from teh session storage
 export const setUserSession = (jwt, user) => {
-    console.log(`in setUserSessions: ${jwt}, ${user}`);
     sessionStorage.setItem('token', jwt);
-    sessionStorage.setItem('user', user);
+    sessionStorage.setItem('user', JSON.stringify(user));
+};
+
+// remove token and user from local storage
+export const endUserSession = () => {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
 };
 

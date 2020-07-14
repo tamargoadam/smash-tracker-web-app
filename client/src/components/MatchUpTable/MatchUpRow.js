@@ -66,10 +66,10 @@ export default function MatchUpRow(props) {
                                                 {gameRow.date}
                                             </TableCell>
                                             <TableCell align="right">
-                                                <img src={STOCK_LOGOS[gameRow.user_char]}/>
+                                                <img src={STOCK_LOGOS[gameRow.user_char]} alt='stock-logo'/>
                                             </TableCell>
                                             <TableCell align="right">
-                                                <img src={STOCK_LOGOS[gameRow.opponent_char]}/>
+                                                <img src={STOCK_LOGOS[gameRow.opponent_char]} alt='stock-logo'/>
                                             </TableCell>
                                             <TableCell align="right">{gameRow.stage}</TableCell>
                                             <TableCell

@@ -29,11 +29,11 @@ const useStyles = makeStyles(() => ({
 
 export default function MatchUps(props) {
     const [matchUps, setMatchUps] = useState([]);
+    const {history} = props;
 
     const classes = useStyles();
 
     useEffect( () => {
-        console.log(getToken(), getUser());
         fetchMatchUps(getToken(), getUser()).then((response) => {
             // Set the topics state with the response data
             setMatchUps(response);
@@ -44,7 +44,7 @@ export default function MatchUps(props) {
     // Render the topics
     return (
         <div className={classes.container}>
-            <NavigationDrawer/>
+            <NavigationDrawer history={history}/>
             <h2 className={classes.head}>Your Match Ups</h2>
             <div className={classes.table} >
                 <MatchUpTable match_ups={matchUps}/>

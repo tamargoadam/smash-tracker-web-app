@@ -16,7 +16,7 @@ CHARACTERS.map((char) =>
             value: char,
             label:
                 <div style={{fontSize: "20px"}}>
-                    <img src={STOCK_LOGOS[char]} height="25px" width="25px"/>
+                    <img src={STOCK_LOGOS[char]} height="25px" width="25px" alt='stock-logo'/>
                     {char}
                 </div>
         })

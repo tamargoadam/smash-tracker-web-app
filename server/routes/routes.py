@@ -28,7 +28,8 @@ def login_user():
     try:
         user = db.get_user(data[EMAIL], data[PASSWORD])
         user_jwt = get_encoded_jwt(data[EMAIL], data[PASSWORD])
-        response = Response(json.dumps(dict(jwt=user_jwt.decode(), user=data[EMAIL])), 200)
+        user.pop('match_ups')
+        response = Response(json.dumps(dict(jwt=user_jwt.decode(), user=user)), 200)
     except Error:
         response = Response(json.dumps(SignInFailed().__dict__), 400)
     response.headers['Access-Control-Allow-Origin'] = '*'

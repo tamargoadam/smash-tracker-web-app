@@ -9,7 +9,6 @@ import Box from "@material-ui/core/Box";
 import Shine from "../../assets/shine.png";
 import Copyright from "../../components/Copyright/Copyright";
 import {LEGAL_STAGES, SNACKBAR_SEVERITY} from "../../constants/Constants"
-import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
 import CharacterSelect from '../../components/CharacterSelect/CharacterSelect'
@@ -17,7 +16,7 @@ import StageScrollSelect from "../../components/StageScrollSelect/StageScrollSel
 import StockSlider from "../../components/StockSlider/StockSlider";
 import ToggleSwitch from "../../components/ToggleSwitch/ToggleSwitch";
 import {postGameData} from "../../utils/Requests";
-import {getToken} from "../../utils/AuthRequests";
+import {getToken, getUser} from "../../utils/AuthRequests";
 import NavigationDrawer from "../../components/NavigationDrawer/NavigationDrawer";
 
 const useStyles = makeStyles((theme) => ({
@@ -79,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function GameInput() {
+export default function GameInput(props) {
     const classes = useStyles();
     // TODO: ADD OPPONENT TO GAME STATE
     const [game, setGame] = useState(
@@ -96,6 +95,8 @@ export default function GameInput() {
     const [openAlert, setOpenAlert] = React.useState(false);
     const [alertMessage, setAlertMessage] = React.useState('');
     const [alertSeverity, setAlertSeverity] = React.useState(SNACKBAR_SEVERITY.info);
+    const {history} = props;
+    const user = getUser();
 
     // Function to set state on change in child component
     function onChangeGameValue(key, val) {
@@ -128,17 +129,17 @@ export default function GameInput() {
 
     return (
         <div className={classes.back}>
-            <NavigationDrawer/>
+            <NavigationDrawer history={history}/>
             <Container className={classes.container} component="main">
                 <CssBaseline />
                 <div className={classes.paper}>
-                    <img className={classes.logo} src={Shine}/>
+                    <img className={classes.logo} src={Shine} alt='shine'/>
                     <Typography component="h1" variant="h5">
                         Enter Your Game Info
                     </Typography>
                     <form className={classes.form} noValidate>
                         <Grid container spacing={2} className={classes.grid}>
-                            <Grid item xs={12} sm={4} justify="left">
+                            <Grid item xs={12} sm={4}>
                                 <CharacterSelect
                                     placeholder="Select User Character..."
                                     setChar={onChangeGameValue}
@@ -160,7 +161,7 @@ export default function GameInput() {
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <StockSlider
-                                    player="User"
+                                    player={user.tag}
                                     setStocks={onChangeGameValue}
                                     isUser={true}
                                 />

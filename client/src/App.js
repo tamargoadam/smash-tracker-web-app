@@ -25,8 +25,8 @@ export default function App() {
                 <Route exact path="/" render={() => <Home/>}/>
                 <Route exact path="/signin" render={() => <SignIn setCurrentUser={setCurrentUser} history={history}/>}/>
                 <Route exact path="/signup" render={() => <SignUp/>}/>
-                <PrivateRoute exact path="/matchups" render={() => <MatchUps currentUser={currentUser}/>}/>
-                <PrivateRoute exact path="/gameinput" render={() => <GameInput/>}/>
+                <PrivateRoute exact path="/matchups" render={() => <MatchUps currentUser={currentUser} history={history}/>}/>
+                <PrivateRoute exact path="/gameinput" render={() => <GameInput history={history}/> }/>
                 <Route component={NotFound}/>
             </Switch>
         </div>

@@ -35,16 +35,15 @@ export const GAME_DATA = {
 
 // Mapping helper function
 function wordToUppercase(txt) {
-    if (txt == "of")
+    if (txt === "of")
         return txt;
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 }
 
 function mapToImages(r) {
     let images = {};
-    r.keys().map((item, index) => { images[item.replace('./', '').replace(/-/g, ' ')
+    r.keys().forEach((item) => { images[item.replace('./', '').replace(/-/g, ' ')
         .replace(/\w\S*/g, function(txt){ return wordToUppercase(txt)})
         .replace(/\.(png|jpe?g|svg)/, '')] = r(item); });
-    console.log(images)
     return images;
 }

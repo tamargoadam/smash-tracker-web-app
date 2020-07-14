@@ -37,7 +37,7 @@ let menuItems = [];
 LEGAL_STAGES.map((stage) =>
     menuItems.push(
         {
-            option: <img src={LEGAL_STAGE_IMAGES[stage]} height="150px" width="200px"/>,
+            option: <img src={LEGAL_STAGE_IMAGES[stage]} height="150px" width="200px" alt='stage'/>,
             value: stage
         }
     )
@@ -49,7 +49,7 @@ export default function StageScrollSelect(props) {
 
     return (
         <div className={classes.scrollMenu}>
-            {menuItems.map((item) =>
+            {menuItems.map((item, index) =>
                 <div
                     onClick={
                         () =>
@@ -58,7 +58,8 @@ export default function StageScrollSelect(props) {
                             setStage(GAME_DATA.stage, item.value);
                         }
                     }
-                    style={item.value == selected ? selectedStyle : notSelectedStyle}
+                    style={item.value === selected ? selectedStyle : notSelectedStyle}
+                    key={index}
                 >
                     {item.option}
                     <div>{item.value}</div>

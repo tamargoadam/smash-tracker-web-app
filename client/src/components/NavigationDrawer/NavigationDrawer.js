@@ -14,6 +14,8 @@ import ArrowBack from '@material-ui/icons/ArrowBackIos';
 import ListAlt from '@material-ui/icons/ListAlt';
 import GameIcon from '@material-ui/icons/SportsEsports';
 import SignOutIcon from '@material-ui/icons/ExitToApp';
+import MenuIcon from '@material-ui/icons/Menu';
+import {endUserSession} from "../../utils/AuthRequests";
 
 const useStyles = makeStyles({
     list: {
@@ -25,22 +27,26 @@ const useStyles = makeStyles({
     menuHead: {
         height: 50,
         width: '100%',
+        '&:hover': {
+            cursor: 'pointer'
+        }
     },
     arrow: {
         float: 'right',
         height: '80%',
         margin: 5,
-        paddingLeft: '100%',
-        '&:hover': {
-            cursor: 'pointer'
-        }
+    },
+    menuOpen: {
+        color: 'white',
+        fontSize: '50px'
     }
 });
 
-export default function NavigationDrawer() {
+export default function NavigationDrawer(props) {
     const classes = useStyles();
     const anchor = 'left';
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
+    const {history} = props;
 
     const toggleDrawer = (open) => (event) => {
         if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -62,11 +68,15 @@ export default function NavigationDrawer() {
         </div>
         <Divider/>
         <List>
-            <ListItem button key={'Match Ups'}>
+            <ListItem button key={'Match Ups'} onClick={() => {
+                history.push('/matchups')
+            }}>
                 <ListItemIcon><ListAlt/></ListItemIcon>
                 <ListItemText primary={'Match Ups'}/>
             </ListItem>
-            <ListItem button key={'Game Input'}>
+            <ListItem button key={'Game Input'} onClick={() => {
+                history.push('/gameinput')
+            }}>
                 <ListItemIcon><GameIcon/></ListItemIcon>
                 <ListItemText primary={'Game Input'}/>
             </ListItem>
@@ -81,7 +91,12 @@ export default function NavigationDrawer() {
                 <ListItemIcon><AccountCircle/></ListItemIcon>
                 <ListItemText primary={'Account Management'}/>
             </ListItem>
-            <ListItem button key={'Sign Out'}>
+            <ListItem button key={'Sign Out'}
+                      onClick={() => {
+                          endUserSession();
+                          history.push('/');
+                      }}
+            >
                 <ListItemIcon><SignOutIcon/></ListItemIcon>
                 <ListItemText primary={'Sign Out'}/>
             </ListItem>
@@ -90,7 +105,7 @@ export default function NavigationDrawer() {
 
     return (
         <div>
-            <Button onClick={toggleDrawer(true)}>{anchor}</Button>
+            <Button onClick={toggleDrawer(true)}><MenuIcon className={classes.menuOpen}/></Button>
             <SwipeableDrawer
                 anchor={anchor}
                 open={open}

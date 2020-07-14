@@ -58,13 +58,13 @@ export default function Home() {
             <header className={classes.header}>
                 <div className={classes.row}>
                     <div className={classes.col}>
-                        <img src={Falco} className={classes.characterImage}/>
+                        <img src={Falco} className={classes.characterImage} alt='falco'/>
                     </div>
                     <div className={classes.col}>
                         <img src={Shine} className={classes.homeLogo} alt="logo"/>
                     </div>
                     <div className={classes.col}>
-                        <img src={Fox} className={classes.characterImage}/>
+                        <img src={Fox} className={classes.characterImage} alt='fox'/>
                     </div>
                 </div>
                 <p>

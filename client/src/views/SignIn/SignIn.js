@@ -1,4 +1,4 @@
-import React, {useState, History} from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -12,7 +12,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Shine from '../../assets/shine.png';
 import Copyright from '../../components/Copyright/Copyright'
-import axios from "axios";
 import {SNACKBAR_SEVERITY} from "../../constants/Constants";
 import MuiAlert from "@material-ui/lab/Alert/Alert";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
@@ -98,7 +97,7 @@ export default function SignIn(props) {
             <Container className={classes.container} component="main" maxWidth="xs">
                 <CssBaseline/>
                 <div className={classes.paper}>
-                    <img className={classes.logo} src={Shine}/>
+                    <img className={classes.logo} src={Shine} alt='shine'/>
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>

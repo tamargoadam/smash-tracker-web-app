@@ -110,7 +110,7 @@ export default function SignUp() {
             <Container className={classes.container} component="main" maxWidth="xs">
                 <CssBaseline />
                 <div className={classes.paper}>
-                    <img className={classes.logo} src={Shine}/>
+                    <img className={classes.logo} src={Shine} alt='shine'/>
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
