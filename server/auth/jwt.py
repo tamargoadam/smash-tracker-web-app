@@ -1,7 +1,7 @@
 import jwt
-from data.db import get_user
-from data.exceptions import Error, InvalidAuth
-from constants.constants import *
+from ..data.db import get_user
+from ..data.exceptions import Error, InvalidAuth
+from ..constants.constants import *
 
 SECRET_KEY = 'MY_SECRET_KEY_HERE'
 

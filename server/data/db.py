@@ -1,9 +1,9 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from models.user import User
-from models.match_up import MatchUp
-from models.game import Game
-from data.exceptions import *
+from ..models.user import User
+from ..models.match_up import MatchUp
+from ..models.game import Game
+from ..data.exceptions import *
 import re
 
 cluster = MongoClient(
