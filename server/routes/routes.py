@@ -2,7 +2,6 @@ import json
 from flask import Flask, Response, request
 from flask_cors import CORS
 import data.db as db
-from constants.constants import *
 from data.exceptions import *
 from auth.jwt import *
 
