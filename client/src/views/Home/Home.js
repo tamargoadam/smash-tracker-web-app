@@ -7,7 +7,14 @@ import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => ({
     container: {
-        textAlign: 'center'
+        textAlign: 'center',
+        height: "100vh",
+        width: "100%",
+        backgroundColor: "#282c34",
+        display: "flex",
+        justifyContent: "flex-start",
+        flexDirection: 'column',
+        overflowY: 'scroll'
     },
     homeLogo: {
         height: '40vmin',
@@ -26,11 +33,12 @@ const useStyles = makeStyles(() => ({
         }
     },
     row: {
+        width: '100%',
         display: 'flex'
     },
     col: {
         width: '33.33%',
-        padding: '50px'
+        margin: 'auto'
     },
     characterImage: {
         height: '40vmin'
