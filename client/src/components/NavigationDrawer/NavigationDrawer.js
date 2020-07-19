@@ -83,7 +83,9 @@ export default function NavigationDrawer(props) {
         </List>
         <Divider/>
         <List>
-            <ListItem button key={'Notifications'}>
+            <ListItem button key={'Notifications'} onClick={() => {
+                history.push('/notifications')
+            }}>
                 <ListItemIcon><NotificationsIcon/></ListItemIcon>
                 <ListItemText primary={'Notifications'}/>
             </ListItem>

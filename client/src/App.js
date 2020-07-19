@@ -13,6 +13,7 @@ import SignIn from "./views/SignIn/SignIn"
 import SignUp from "./views/SignUp/SignUp"
 import MatchUps from "./views/MatchUps/MatchUps";
 import GameInput from "./views/GameInput/GameInput"
+import Notifications from "./views/Notifications/Notifications"
 
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
                 <Route exact path="/signup" render={() => <SignUp/>}/>
                 <PrivateRoute exact path="/matchups" render={() => <MatchUps currentUser={currentUser} history={history}/>}/>
                 <PrivateRoute exact path="/gameinput" render={() => <GameInput history={history}/> }/>
+                <PrivateRoute exact path="/notifications" render={() => <Notifications history={history}/> }/>
                 <Route component={NotFound}/>
             </Switch>
         </div>

@@ -276,19 +276,19 @@ def get_match_up(user, opponent):
 
 
 # For testing functions
-"""
 clear_users_collection()
-add_user('Adam', 'Tamargo', 'atamargo@ufl.edu', 'pass', 'Tod', 'Captain Falcon')
-add_user('Mike', 'Cuervo', 'mikec@gmail.com', 'pass', 'Buervo', 'Falco')
-add_user('John', 'Carey', 'jc813@yahoo.com', 'pass', 'John', 'Captain Falcon')
+"""
+add_user('Adam', 'Tamargo', 'atamargo@ufl.edu', 'Blackacre1', 'Tod', 'Captain Falcon')
+add_user('Mike', 'Cuervo', 'mikec@gmail.com', 'CuervoPass1', 'Buervo', 'Falco')
+add_user('John', 'Carey', 'jc813@yahoo.com', 'JohnPass1', 'John', 'Captain Falcon')
 add_game('atamargo@ufl.edu', 'Mr. Game & Watch', 'mikec@gmail.com', 'Kirby', 'Final Destination', True, 4, 0)
 add_game('atamargo@ufl.edu', 'Fox', 'mikec@gmail.com', 'Falco', 'Pokemon Stadium', False, 0, 1)
 add_game('atamargo@ufl.edu', 'Yoshi', 'jc813@yahoo.com', 'Kirby', 'Fountain of Dreams', True, 4, 0)
 add_game('atamargo@ufl.edu', 'Captain Falcon', 'jc813@yahoo.com', 'Falco', 'Pokemon Stadium', True, 1, 0)
 add_game('mikec@gmail.com', 'Samus', 'jc813@yahoo.com', 'Falco', 'Yoshi\'s Island', True, 1, 0)
-"""
 
 approve_game('mikec@gmail.com', 'atamargo@ufl.edu', [str(ObjectId('5edc1c8cdf3fa67d0d7a936d'))])
+"""
 
 # remove_user('mikec@gmail.com')
 
