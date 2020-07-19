@@ -54,6 +54,21 @@ def post_match_ups():
     return response
 
 
+@app.route('/opponents', methods=['GET', 'POST'])
+def post_opponents():
+    """
+    post all past opponents for user
+    """
+    try:
+        user = get_user_by_auth(request.headers['Authorization'])
+        opponents = db.get_all_past_opponents(user[EMAIL])
+        response = Response(json.dumps(opponents), 200)
+    except Error as e:
+        response = Response(json.dumps(e.__dict__), 400)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+
 @app.route('/gameinput', methods=['GET', 'POST'])
 def add_game():
     """
@@ -64,7 +79,7 @@ def add_game():
         user = get_user_by_auth(request.headers['Authorization'])
         db.add_game(user[EMAIL], game[USER_CHAR], game[OPPONENT], game[OPPONENT_CHAR],
                     game[STAGE], game[WIN], game[USER_STOCK], game[OPPONENT_STOCK])
-        response = Response(200)
+        response = Response('', 200)
     except Error as e:
         response = Response(json.dumps(e.__dict__), 400)
     response.headers['Access-Control-Allow-Origin'] = '*'

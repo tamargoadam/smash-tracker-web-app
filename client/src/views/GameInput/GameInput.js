@@ -18,6 +18,7 @@ import ToggleSwitch from "../../components/ToggleSwitch/ToggleSwitch";
 import {postGameData} from "../../utils/Requests";
 import {getToken, getUser} from "../../utils/AuthRequests";
 import NavigationDrawer from "../../components/NavigationDrawer/NavigationDrawer";
+import OpponentSearch from "../../components/OpponentSearch/OpponentSearch";
 
 const useStyles = makeStyles((theme) => ({
     back: {
@@ -85,6 +86,7 @@ export default function GameInput(props) {
         {
             data: {
                 user_char: "",
+                opponent: "",
                 opponent_char: "",
                 stage: LEGAL_STAGES[0],
                 win: true,
@@ -105,7 +107,7 @@ export default function GameInput(props) {
 
     // Send game data to server
     const handleSubmit = async () => {
-        // Post to sign up api
+        // Post to game input api
         postGameData(getToken(), game).then(() =>
             {
                 setAlertSeverity(SNACKBAR_SEVERITY.success)
@@ -139,9 +141,16 @@ export default function GameInput(props) {
                     </Typography>
                     <form className={classes.form} noValidate>
                         <Grid container spacing={2} className={classes.grid}>
+                            <Grid item xs={12} sm={3}/>
+                            <Grid item xs={12} sm={6}>
+                                <OpponentSearch
+                                    setOpponent={opponent => {onChangeGameValue('opponent', opponent)}}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}/>
                             <Grid item xs={12} sm={4}>
                                 <CharacterSelect
-                                    placeholder="Select User Character..."
+                                    placeholder="Select your character..."
                                     setChar={onChangeGameValue}
                                     isUser={true}
                                 />
@@ -149,7 +158,7 @@ export default function GameInput(props) {
                             <Grid item xs={12} sm={4}/>
                             <Grid item xs={12} sm={4}>
                                 <CharacterSelect
-                                    placeholder="Select Opponent Character..."
+                                    placeholder="Select opponent's character..."
                                     setChar={onChangeGameValue}
                                     isUser={false}
                                 />

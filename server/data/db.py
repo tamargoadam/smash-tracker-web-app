@@ -252,6 +252,20 @@ def get_all_match_ups(email):
     return match_ups
 
 
+def get_all_past_opponents(email):
+    """
+    :param email: user's email
+    :return: list of all past opponents for user
+    """
+    opponents = []
+    if collection.find_one({"email": email}) is None:
+        raise UserNotFound(email)
+    u = collection.find_one({"email": email})
+    for match_up in u["match_ups"]:
+        opponents.append({"email": match_up["opponent"], "tag": match_up["opponent_tag"]})
+    return opponents
+
+
 def get_match_up(user, opponent):
     """
     :param user: user's email
