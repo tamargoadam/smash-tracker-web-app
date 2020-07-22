@@ -16,6 +16,16 @@ class Game:
         :param opponent_approved: record approved by opponent
         :param date: date record was created
         """
+
+        # TODO: Add assertions for all models (add constant lists for comparison)
+
+        assert _id != ""
+        assert user_char != ""
+        assert opponent_char != ""
+        assert stage != ""
+        assert 0 <= user_stock <= 4
+        assert 0 <= opponent_stock <= 4
+
         self._id = _id
         self.user_char = user_char
         self.opponent_char = opponent_char

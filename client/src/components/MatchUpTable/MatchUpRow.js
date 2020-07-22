@@ -61,6 +61,8 @@ export default function MatchUpRow(props) {
                                 </TableHead>
                                 <TableBody>
                                     {row.games.map((gameRow) => (
+                                        gameRow.user_approved && gameRow.opponent_approved
+                                            ?
                                         <TableRow key={gameRow.date}>
                                             <TableCell component="th" scope="row">
                                                 {gameRow.date}
@@ -79,6 +81,8 @@ export default function MatchUpRow(props) {
                                                 {gameRow.win ? "Win" : "Loss"}
                                             </TableCell>
                                         </TableRow>
+                                            :
+                                            null
                                     ))}
                                 </TableBody>
                             </Table>

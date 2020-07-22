@@ -277,7 +277,7 @@ def get_match_up(user, opponent):
 
 # For testing functions
 clear_users_collection()
-"""
+
 add_user('Adam', 'Tamargo', 'atamargo@ufl.edu', 'Blackacre1', 'Tod', 'Captain Falcon')
 add_user('Mike', 'Cuervo', 'mikec@gmail.com', 'CuervoPass1', 'Buervo', 'Falco')
 add_user('John', 'Carey', 'jc813@yahoo.com', 'JohnPass1', 'John', 'Captain Falcon')
@@ -288,7 +288,6 @@ add_game('atamargo@ufl.edu', 'Captain Falcon', 'jc813@yahoo.com', 'Falco', 'Poke
 add_game('mikec@gmail.com', 'Samus', 'jc813@yahoo.com', 'Falco', 'Yoshi\'s Island', True, 1, 0)
 
 approve_game('mikec@gmail.com', 'atamargo@ufl.edu', [str(ObjectId('5edc1c8cdf3fa67d0d7a936d'))])
-"""
 
 # remove_user('mikec@gmail.com')
 

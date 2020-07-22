@@ -78,9 +78,10 @@ export default function SignIn(props) {
             props.history.push('/matchups')
         }
         catch(error){
-            console.log(error);
             setAlertSeverity(SNACKBAR_SEVERITY.error);
-            setAlertMessage(error.response.message);
+            setAlertMessage(error.response.data ?
+                error.response.data.message : "An error has occurred during the sign in process."
+            );
             setOpenAlert(true);
         };
     };

@@ -82,6 +82,8 @@ def add_game():
         response = Response('', 200)
     except Error as e:
         response = Response(json.dumps(e.__dict__), 400)
+    except AssertionError as e:
+        response = Response('', 400)
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 

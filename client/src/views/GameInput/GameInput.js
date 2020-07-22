@@ -110,14 +110,16 @@ export default function GameInput(props) {
         // Post to game input api
         postGameData(getToken(), game).then(() =>
             {
-                setAlertSeverity(SNACKBAR_SEVERITY.success)
-                setAlertMessage('Game record successfully submitted!')
+                setAlertSeverity(SNACKBAR_SEVERITY.success);
+                setAlertMessage('Game record successfully submitted!');
                 setOpenAlert(true);
             }
         ).catch(error =>
         {
-            setAlertSeverity(SNACKBAR_SEVERITY.error)
-            setAlertMessage(error.message)
+            setAlertSeverity(SNACKBAR_SEVERITY.error);
+            setAlertMessage(error.response.data ?
+                error.response.data.message : "An error has occurred while attempting to record your game data."
+            );
             setOpenAlert(true);
         });
     };

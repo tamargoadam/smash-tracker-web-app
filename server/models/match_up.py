@@ -7,6 +7,12 @@ class MatchUp:
         :param losses: number of wins for opponent
         :param games: list of games between user and opponent
         """
+
+        assert opponent != ""
+        assert opponent_tag != ""
+        assert wins >= 0
+        assert losses >= 0
+
         self.opponent = opponent
         self.opponent_tag = opponent_tag
         self.wins = wins
