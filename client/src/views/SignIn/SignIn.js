@@ -102,7 +102,7 @@ export default function SignIn(props) {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <form className={classes.form} noValidate>
+                    <form className={classes.form} onKeyPress={e => {if(e.key === 'Enter') handleLogin()}} noValidate>
                         <TextField
                             variant="outlined"
                             margin="normal"

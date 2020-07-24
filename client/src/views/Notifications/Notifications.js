@@ -10,7 +10,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import NavigationDrawer from "../../components/NavigationDrawer/NavigationDrawer";
-import MatchUpTable from "../../components/MatchUpTable/MatchUpTable";
+import ApprovalTable from "../../components/ApprovalTable/ApprovalTable";
 
 const useStyles = makeStyles((theme) => ({
     back: {
@@ -104,7 +104,7 @@ export default function Notifications(props) {
                     </Tabs>
                 </Paper>
                 <TabPanel value={value} index={0}>
-                    <MatchUpTable approval={true}/>
+                    <ApprovalTable/>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                 </TabPanel>
