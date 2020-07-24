@@ -4,8 +4,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import AcceptIcon from '@material-ui/icons/CheckCircleOutline';
-import DeleteIcon from '@material-ui/icons/Delete';
+import ApproveIcon from '@material-ui/icons/CheckCircleOutline';
+import DeclineIcon from '@material-ui/icons/HighlightOff';
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -27,13 +27,13 @@ const useToolbarStyles = makeStyles((theme) => ({
     title: {
         flex: '1 1 100%',
     },
-    acceptIcon: {
+    approveIcon: {
         color: 'green',
         '&:hover': {
             background: lighten('#00ff00', .9)
         }
     },
-    deleteIcon: {
+    declineIcon: {
         color: '#db0e00',
         '&:hover': {
             background: lighten('#db0e00', .9)
@@ -63,14 +63,14 @@ export default function ApprovalTableToolbar(props) {
 
             {numSelected > 0 ? (
                 <>
-                    <Tooltip title="Accept">
-                        <IconButton aria-label="accept" className={classes.acceptIcon}>
-                            <AcceptIcon/>
+                    <Tooltip title="Approve">
+                        <IconButton aria-label="approve" className={classes.approveIcon}>
+                            <ApproveIcon/>
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="Delete">
-                        <IconButton aria-label="delete" className={classes.deleteIcon}>
-                            <DeleteIcon/>
+                    <Tooltip title="Decline">
+                        <IconButton aria-label="decline" className={classes.declineIcon}>
+                            <DeclineIcon/>
                         </IconButton>
                     </Tooltip>
                 </>
