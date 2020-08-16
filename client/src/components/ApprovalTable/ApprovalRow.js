@@ -4,6 +4,7 @@ import TableRow from "@material-ui/core/TableRow";
 import React from "react";
 import {lighten} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import {STOCK_LOGOS} from "../../constants/Constants";
 
 
 const useStyles = makeStyles(() => ({
@@ -45,10 +46,10 @@ export default function ApprovalRow(props){
                 {row.time}
             </TableCell>
             <TableCell align="right">
-                {row.user_char}
+                <img src={STOCK_LOGOS[row.user_char]} alt='stock-logo'/>
             </TableCell>
             <TableCell align="right">
-                {row.opponent_char}
+                <img src={STOCK_LOGOS[row.opponent_char]} alt='stock-logo'/>
             </TableCell>
             <TableCell align="right">
                 {row.stage}
