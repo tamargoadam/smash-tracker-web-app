@@ -1,41 +1,35 @@
 import datetime
 
 
-class Game:
-    def __init__(self, _id: str, user_char: str, opponent_char: str, stage: str, win: bool, user_stock: int,
-                 opponent_stock: int, user_approved: bool = False, opponent_approved: bool = False, date: str = ''):
+class MatchUp:
+    def __init__(self, _id: int, stage: str, games: list = [], date: str = ''):
         """
-        :param _id: object id, matches id of opponents game
-        :param user_char: character used by user
-        :param opponent_char: character used by opponent
+        :param _id: object id
         :param stage: stage game was played on
-        :param win: did user win?
-        :param user_stock: user stocks at game end
-        :param opponent_stock: opponent stocks at game end
-        :param user_approved: record approved by user
-        :param opponent_approved: record approved by opponent
-        :param date: date record was created
+        :param games: list of 2 game objects, one obj for each players game data
+        :param date: datetime string indicating the creation of the object
         """
 
-        # TODO: Add assertions for all models (add constant lists for comparison)
-
-        assert _id != ""
-        assert user_char != ""
-        assert opponent_char != ""
+        assert _id is not None
         assert stage != ""
-        assert 0 <= user_stock <= 4
-        assert 0 <= opponent_stock <= 4
+        assert len(games) == 2
 
         self._id = _id
-        self.user_char = user_char
-        self.opponent_char = opponent_char
         self.stage = stage
-        self.win = win
-        self.user_stock = user_stock
-        self.opponent_stock = opponent_stock
-        self.user_approved = user_approved
-        self.opponent_approved = opponent_approved
         self.date = datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") if date is '' else date
+        self.games = games
+
+    def dict(self):
+        match_up_dict = {
+            "_id": self._id,
+            "stage": self.stage,
+            "date": self.date,
+            "games": []
+        }
+        for game in self.games:
+            match_up_dict["games"].append(game.__dict__)
+        return match_up_dict
 
     def __str__(self):
-        return str(self.__dict__)
+        return str(self.dict())
+
