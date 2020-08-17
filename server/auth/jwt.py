@@ -7,7 +7,7 @@ SECRET_KEY = 'MY_SECRET_KEY_HERE'
 
 
 def get_encoded_jwt(email, password):
-    return jwt.encode({'email': email, 'password': password}, SECRET_KEY, algorithm='HS256')
+    return jwt.encode({EMAIL: email, PASSWORD: password}, SECRET_KEY, algorithm='HS256')
 
 
 def get_user_by_auth(auth: str):

@@ -1,4 +1,4 @@
-class Game:
+class PlayerMatch:
     def __init__(self, user_id: int, email: str, tag: str, char: str, win: bool, stock: int, approved: bool = False):
         """
         :param user_id: id of user
