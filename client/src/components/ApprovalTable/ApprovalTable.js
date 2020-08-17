@@ -5,7 +5,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
-import {fetchMatchUps} from "../../utils/Requests";
+import {fetchGames} from "../../utils/Requests";
 import {getToken, getUser} from "../../utils/AuthRequests";
 
 import ApprovalTableToolbar from './ApprovalTableToolBar'
@@ -78,16 +78,29 @@ export default function ApprovalTable() {
 
 
     useEffect(() => {
-        fetchMatchUps(getToken(), getUser()).then(async (matchups) => {
+        fetchGames(getToken(), getUser()).then(async (games) => {
             // Set the topics state with the response data
             let rows = [];
-            let i = 0;
-            matchups.forEach(matchup => {
-                matchup.games.forEach(game => {
-                    rows.push(createData(i, matchup.opponent, game.date, game.user_char,
-                        game.opponent_char, game.stage, game.win));
-                    i++
-                })
+            games.forEach(game => {
+                let opponent = "";
+                let user_char = "";
+                let opponent_char = "";
+                let win = false
+                game.player_matches.forEach(pm => {
+                    console.log('---')
+                    console.log(getUser()._id)
+                    console.log(pm.user, pm.email)
+                    if (pm.user === getUser()._id){
+                        console.log('here')
+                        user_char = pm.character;
+                        win = pm.win
+                    } else {
+                        opponent = pm.email;
+                        opponent_char = pm.character
+                    }
+                });
+                rows.push(createData(game._id, opponent, game.date, user_char,
+                    opponent_char, game.stage, win));
             });
             setGameRows(rows)
         });

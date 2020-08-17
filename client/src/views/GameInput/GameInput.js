@@ -102,6 +102,7 @@ export default function GameInput(props) {
 
     // Function to set state on change in child component
     function onChangeGameValue(key, val) {
+        if (key === 'opponent_stock' || key === 'user_stock') val = parseInt(val);
         setGame({...game, data: {...game.data, [key]: val}})
     }
 

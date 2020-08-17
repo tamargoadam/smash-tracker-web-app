@@ -21,9 +21,19 @@ PLAYER_MATCHES = 'player_matches'
 
 # Player match constants
 USER = 'user'
-USER_CHAR = 'user_char'
-OPPONENT = 'opponent'
-OPPONENT_CHAR = 'opponent_char'
+CHAR = 'character'
 WIN = 'win'
-USER_STOCK = 'user_stock'
-OPPONENT_STOCK = 'opponent_stock'
+STOCK = 'stock'
+APPROVED = 'approved'
+
+# Match up constants
+OPPONENT = "opponent"
+OPPONENT_TAG = "opponent_tag"
+WINS = "wins"
+LOSSES = "losses"
+USER_CHAR = "user_char"
+OPPONENT_CHAR = "opponent_char"
+USER_STOCK = "user_stock"
+OPPONENT_STOCK = "opponent_stock"
+USER_APPROVED = "user_approved"
+OPPONENT_APPROVED = "opponent_approved"

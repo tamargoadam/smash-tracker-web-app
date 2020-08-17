@@ -55,7 +55,7 @@ def add_user(f_name, l_name, email, password, tag, main):
     return new_user
 
 
-def get_user_by_auth(email, password):
+def get_user_by_login(email, password):
     """
     get all data for user by auth info
 
@@ -94,7 +94,8 @@ def remove_user(_id):
     users_collection.delete_one({ID: _id})
 
 
-def add_game(user: int, user_char: str, opponent: int, opponent_char: str,
+# TODO:
+def add_game(user: int, user_char: str, opponent: str, opponent_char: str,
              stage: str, win: bool, user_stock: int, opponent_stock: int):
     """
     validate users exist and are not the same
@@ -103,7 +104,7 @@ def add_game(user: int, user_char: str, opponent: int, opponent_char: str,
 
     :param user: id of user
     :param user_char: character used by user
-    :param opponent: id of opponent
+    :param opponent: email of opponent
     :param opponent_char: character used by opponent
     :param stage: stage game was played on
     :param win: did user win
@@ -116,7 +117,7 @@ def add_game(user: int, user_char: str, opponent: int, opponent_char: str,
     usr = users_collection.find_one({ID: user})
     if usr is None:
         raise UserNotFound(user)
-    opp = users_collection.find_one({ID: opponent})
+    opp = users_collection.find_one({EMAIL: opponent})
     if opp is None:
         raise UserNotFound(opponent)
 
@@ -129,7 +130,7 @@ def add_game(user: int, user_char: str, opponent: int, opponent_char: str,
             break
     # create games with user and opponent data
     user_match = PlayerMatch(user, usr[EMAIL], usr[TAG], user_char, win, user_stock, True)
-    opponent_match = PlayerMatch(opponent, opp[EMAIL], opp[TAG], opponent_char, not win, opponent_stock)
+    opponent_match = PlayerMatch(opp[ID], opp[EMAIL], opp[TAG], opponent_char, not win, opponent_stock)
 
     # add match up to db
     new_game = Game(_id, stage, [user_match, opponent_match])
@@ -142,7 +143,7 @@ def add_game(user: int, user_char: str, opponent: int, opponent_char: str,
 
 def approve_game(user: int, game_ids: list):
     games_collection.update_many(
-        {ID: {"$in": game_ids}, "player_matches.user_id": user},
+        {ID: {"$in": game_ids}, "player_matches.user": user},
         {"$set": {"player_matches.$.approved": True}}
     )
 
@@ -160,7 +161,7 @@ def change_main(user, main):
     users_collection.update_one({ID: user}, {"$set": {MAIN: main}})
 
 
-def get_all_match_ups(user):
+def get_all_games(user):
     """
     :param user: user's id
     :return: list of all game objects for user
@@ -168,7 +169,13 @@ def get_all_match_ups(user):
     if users_collection.find_one({ID: user}) is None:
         raise UserNotFound(user)
     u = users_collection.find_one({ID: user})
-    games = games_collection.find({ID: {"$in": u[GAMES]}})
+    res = games_collection.find({ID: {"$in": u[GAMES]}})
+    games = []
+    for g in res:
+        player_matches = []
+        for pm in g[PLAYER_MATCHES]:
+            player_matches.append(PlayerMatch(pm[USER], pm[EMAIL], pm[TAG], pm[CHAR], pm[WIN], pm[STOCK], pm[APPROVED]))
+        games.append(Game(g[ID], g[STAGE], player_matches, g[DATE]))
     return games
 
 
@@ -185,8 +192,8 @@ def get_all_past_opponents(user):
     for game in games:
         player_matches = game["player_matches"]
         for pm in player_matches:
-            if pm["user_id"] != user and not any(o[ID] == pm["user_id"] for o in opponents):
-                opponents.append({ID: pm["user_id"], EMAIL: pm[EMAIL], TAG: pm[TAG]})
+            if pm[USER] != user and not any(o[ID] == pm[USER] for o in opponents):
+                opponents.append({ID: pm[USER], EMAIL: pm[EMAIL], TAG: pm[TAG]})
     return opponents
 
 
@@ -206,18 +213,19 @@ clear_games_collection()
 adam = add_user('Adam', 'Tamargo', 'atamargo@ufl.edu', 'Blackacre1', 'Tod', 'Captain Falcon').get_id()
 mike = add_user('Mike', 'Cuervo', 'mikec@gmail.com', 'CuervoPass1', 'Buervo', 'Falco').get_id()
 john = add_user('John', 'Carey', 'jc813@yahoo.com', 'JohnPass1', 'John', 'Captain Falcon').get_id()
-am_game1 = add_game(adam, 'Mr. Game & Watch', mike, 'Kirby', 'Final Destination', True, 4, 0).get_id()
-am_game2 = add_game(adam, 'Fox', mike, 'Falco', 'Pokemon Stadium', False, 0, 1).get_id()
-add_game(adam, 'Yoshi', john, 'Kirby', 'Fountain of Dreams', True, 4, 0)
-add_game(adam, 'Captain Falcon', john, 'Falco', 'Pokemon Stadium', True, 1, 0)
-add_game(mike, 'Samus', john, 'Falco', 'Yoshi\'s Island', True, 1, 0)
+am_game1 = add_game(adam, 'Mr. Game & Watch', 'mikec@gmail.com', 'Kirby', 'Final Destination', True, 4, 0).get_id()
+am_game2 = add_game(adam, 'Fox', 'mikec@gmail.com', 'Falco', 'Pokemon Stadium', False, 0, 1).get_id()
+add_game(adam, 'Yoshi', 'jc813@yahoo.com', 'Kirby', 'Fountain of Dreams', True, 4, 0)
+aj_game1 = add_game(adam, 'Captain Falcon', 'jc813@yahoo.com', 'Falco', 'Pokemon Stadium', True, 1, 0).get_id()
+add_game(mike, 'Samus', 'jc813@yahoo.com', 'Falco', 'Yoshi\'s Island', True, 1, 0)
 
 approve_game(mike, [am_game2, am_game1])
+approve_game(john, [aj_game1])
 #
 # # remove_user('mikec@gmail.com')
 #
-for match_up in get_all_match_ups(adam):
-    print(match_up)
+for game in get_all_games(adam):
+    print(game)
 
 print('\n')
 for opponent in get_all_past_opponents(adam):

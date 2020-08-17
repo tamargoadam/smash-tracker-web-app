@@ -1,5 +1,5 @@
 import jwt
-from data.db import get_user
+from data.db import get_user_by_login
 from data.exceptions import Error, InvalidAuth
 from constants.constants import *
 
@@ -23,7 +23,7 @@ def get_user_by_auth(auth: str):
     a = auth.split("Bearer ", 1)[1]
     payload = jwt.decode(a, SECRET_KEY, algorithm='HS256')
     try:
-        return get_user(payload[EMAIL], payload[PASSWORD])
+        return get_user_by_login(payload[EMAIL], payload[PASSWORD])
     except Error:
         raise InvalidAuth
     return
