@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function SignUp() {
+export default function SignUp(props) {
     const classes = useStyles();
     const [user, setUser] = useState(
         {
@@ -76,6 +76,7 @@ export default function SignUp() {
             }
         });
     const [alert, setAlert] = React.useState({open: false, message: '', severity: SNACKBAR_SEVERITY.info});
+    const {history} = props;
 
     const postUserData = async () => {
         // Post to sign up api
@@ -87,7 +88,8 @@ export default function SignUp() {
                 open: true,
                 message: 'Account successfully created!',
                 severity: SNACKBAR_SEVERITY.success
-            })
+            });
+            setTimeout(() => history.push('/signin'), 2000)
         }
         ).catch(error =>
         {

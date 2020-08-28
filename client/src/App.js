@@ -25,7 +25,7 @@ export default function App() {
             <Switch>
                 <Route exact path="/" render={() => <Home/>}/>
                 <Route exact path="/signin" render={() => <SignIn setCurrentUser={setCurrentUser} history={history}/>}/>
-                <Route exact path="/signup" render={() => <SignUp/>}/>
+                <Route exact path="/signup" render={() => <SignUp history={history}/>}/>
                 <PrivateRoute exact path="/matchups" render={() => <MatchUps currentUser={currentUser} history={history}/>}/>
                 <PrivateRoute exact path="/gameinput" render={() => <GameInput history={history}/> }/>
                 <PrivateRoute exact path="/notifications" render={() => <Notifications history={history}/> }/>
