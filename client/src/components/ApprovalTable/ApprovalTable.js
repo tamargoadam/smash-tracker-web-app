@@ -12,8 +12,7 @@ import ApprovalTableToolbar from './ApprovalTableToolBar'
 import ApprovalTableHead from './ApprovalTableHead'
 import ApprovalRow from "./ApprovalRow";
 import {SNACKBAR_SEVERITY} from "../../constants/Constants";
-import MuiAlert from "@material-ui/lab/Alert/Alert";
-import Snackbar from "@material-ui/core/Snackbar/Snackbar";
+import Alert from "../Alert/Alert"
 
 function createData(key, opponent, time, user_char, opponent_char, stage, win) {
     return {key, opponent, time, user_char, opponent_char, stage, win};
@@ -79,9 +78,7 @@ export default function ApprovalTable() {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [games, _setGames] = useState([]);
     const [gameRows, setGameRows] = useState([]);
-    const [openAlert, setOpenAlert] = React.useState(false);
-    const [alertMessage, setAlertMessage] = React.useState('');
-    const [alertSeverity, setAlertSeverity] = React.useState(SNACKBAR_SEVERITY.info);
+    const [alert, setAlert] = React.useState({open: false, message: '', severity: SNACKBAR_SEVERITY.info});
 
 
     const  setGames = useCallback((g) => {
@@ -117,13 +114,6 @@ export default function ApprovalTable() {
         });
     }, [setGames]);
 
-    const handleCloseAlert = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpenAlert(false);
-    };
-
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -135,16 +125,20 @@ export default function ApprovalTable() {
             let g = [...games];
             g = g.filter(game => !selected.some(s => s === game._id));
             setGames(g);
-                setAlertSeverity(SNACKBAR_SEVERITY.success);
-                setAlertMessage('The selected games have been successfully approved!');
-                setOpenAlert(true);
+                setAlert({
+                    open: true,
+                    message: 'The selected games have been successfully approved!',
+                    severity: SNACKBAR_SEVERITY.success
+                })
             }
         ).catch(error => {
-            setAlertSeverity(SNACKBAR_SEVERITY.error);
-            setAlertMessage(error.response.data.message ?
-                error.response.data.message : "An error has occurred while attempting to approve the selected games."
-            );
-            setOpenAlert(true);
+            setAlert({
+                open: true,
+                message: error.response.data.message ?
+                    error.response.data.message :
+                    "An error has occurred while attempting to approve the selected games.",
+                severity: SNACKBAR_SEVERITY.error
+            })
         });
     };
 
@@ -158,7 +152,6 @@ export default function ApprovalTable() {
     };
 
     const handleClick = (event, key) => {
-        console.log(key)
         const selectedIndex = selected.indexOf(key);
         let newSelected = [];
 
@@ -238,11 +231,7 @@ export default function ApprovalTable() {
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </Paper>
-            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>
-                <MuiAlert onClose={handleCloseAlert} elevation={6} variant="filled" severity={alertSeverity}>
-                    {alertMessage}
-                </MuiAlert>
-            </Snackbar>
+            <Alert alert={alert} setAlert={setAlert}/>
         </div>
     );
 }

@@ -12,8 +12,7 @@ import Shine from "../../assets/shine.png";
 import Copyright from "../../components/Copyright/Copyright";
 import { CHARACTERS, STOCK_LOGOS, SNACKBAR_SEVERITY } from "../../constants/Constants"
 import axios from "axios";
-import Snackbar from "@material-ui/core/Snackbar/Snackbar";
-import MuiAlert from '@material-ui/lab/Alert';
+import Alert from "../../components/Alert/Alert";
 
 const useStyles = makeStyles((theme) => ({
     back: {
@@ -76,9 +75,7 @@ export default function SignUp() {
                 main: "No Main"
             }
         });
-    const [openAlert, setOpenAlert] = React.useState(false);
-    const [alertMessage, setAlertMessage] = React.useState('');
-    const [alertSeverity, setAlertSeverity] = React.useState(SNACKBAR_SEVERITY.info);
+    const [alert, setAlert] = React.useState({open: false, message: '', severity: SNACKBAR_SEVERITY.info});
 
     const postUserData = async () => {
         // Post to sign up api
@@ -86,23 +83,20 @@ export default function SignUp() {
             'http://127.0.0.1:5000/signup', user
         ).then(response =>
         {
-            setAlertSeverity(SNACKBAR_SEVERITY.success)
-            setAlertMessage('Account successfully created!')
-            setOpenAlert(true);
+            setAlert({
+                open: true,
+                message: 'Account successfully created!',
+                severity: SNACKBAR_SEVERITY.success
+            })
         }
         ).catch(error =>
         {
-            setAlertSeverity(SNACKBAR_SEVERITY.error)
-            setAlertMessage(error.response.data.message)
-            setOpenAlert(true);
+            setAlert({
+                open: true,
+                message: error.response.data.message,
+                severity: SNACKBAR_SEVERITY.error
+            })
         });
-    }
-
-    const handleCloseAlert = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpenAlert(false);
     };
 
     return (
@@ -226,11 +220,7 @@ export default function SignUp() {
                     <Copyright/>
                 </Box>
             </Container>
-            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>
-                <MuiAlert onClose={handleCloseAlert} elevation={6} variant="filled" severity={alertSeverity}>
-                    {alertMessage}
-                </MuiAlert>
-            </Snackbar>
+            <Alert alert={alert} setAlert={setAlert}/>
         </div>
     );
 }

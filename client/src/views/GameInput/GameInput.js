@@ -9,8 +9,6 @@ import Box from "@material-ui/core/Box";
 import Shine from "../../assets/shine.png";
 import Copyright from "../../components/Copyright/Copyright";
 import {LEGAL_STAGES, SNACKBAR_SEVERITY} from "../../constants/Constants"
-import Snackbar from "@material-ui/core/Snackbar/Snackbar";
-import MuiAlert from '@material-ui/lab/Alert';
 import CharacterSelect from '../../components/CharacterSelect/CharacterSelect'
 import StageScrollSelect from "../../components/StageScrollSelect/StageScrollSelect";
 import StockSlider from "../../components/StockSlider/StockSlider";
@@ -19,6 +17,7 @@ import {postGameData} from "../../utils/Requests";
 import {getUser} from "../../utils/AuthRequests";
 import NavigationDrawer from "../../components/NavigationDrawer/NavigationDrawer";
 import OpponentSearch from "../../components/OpponentSearch/OpponentSearch";
+import Alert from "../../components/Alert/Alert";
 
 const useStyles = makeStyles((theme) => ({
     back: {
@@ -94,9 +93,7 @@ export default function GameInput(props) {
                 opponent_stock: 0
             }
         });
-    const [openAlert, setOpenAlert] = React.useState(false);
-    const [alertMessage, setAlertMessage] = React.useState('');
-    const [alertSeverity, setAlertSeverity] = React.useState(SNACKBAR_SEVERITY.info);
+    const [alert, setAlert] = React.useState({open: false, message: '', severity: SNACKBAR_SEVERITY.info});
     const {history} = props;
     const user = getUser();
 
@@ -111,25 +108,21 @@ export default function GameInput(props) {
         // Post to game input api
         postGameData(game).then(() =>
             {
-                setAlertSeverity(SNACKBAR_SEVERITY.success);
-                setAlertMessage('Game record successfully submitted!');
-                setOpenAlert(true);
+                setAlert({
+                    open: true,
+                    message: 'Game record successfully submitted!',
+                    severity: SNACKBAR_SEVERITY.success
+                })
             }
         ).catch(error =>
         {
-            setAlertSeverity(SNACKBAR_SEVERITY.error);
-            setAlertMessage(error.response.data ?
-                error.response.data.message : "An error has occurred while attempting to record your game data."
-            );
-            setOpenAlert(true);
+            setAlert({
+                open: true,
+                message: error.response.data ?
+                    error.response.data.message : "An error has occurred while attempting to record your game data.",
+                severity: SNACKBAR_SEVERITY.error
+            })
         });
-    };
-
-    const handleCloseAlert = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpenAlert(false);
     };
 
     return (
@@ -209,11 +202,7 @@ export default function GameInput(props) {
                     <Copyright/>
                 </Box>
             </Container>
-            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>
-                <MuiAlert onClose={handleCloseAlert} elevation={6} variant="filled" severity={alertSeverity}>
-                    {alertMessage}
-                </MuiAlert>
-            </Snackbar>
+            <Alert alert={alert} setAlert={setAlert}/>
         </div>
     );
 }

@@ -13,10 +13,9 @@ import Container from '@material-ui/core/Container';
 import Shine from '../../assets/shine.png';
 import Copyright from '../../components/Copyright/Copyright'
 import {SNACKBAR_SEVERITY} from "../../constants/Constants";
-import MuiAlert from "@material-ui/lab/Alert/Alert";
-import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import {postUserData} from "../../utils/Requests"
 import {setUserSession} from "../../utils/AuthRequests"
+import Alert from "../../components/Alert/Alert";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -65,9 +64,7 @@ export default function SignIn(props) {
                 password: "",
             }
         });
-    const [openAlert, setOpenAlert] = React.useState(false);
-    const [alertMessage, setAlertMessage] = React.useState('');
-    const [alertSeverity, setAlertSeverity] = React.useState(SNACKBAR_SEVERITY.info);
+    const [alert, setAlert] = React.useState({open: false, message: '', severity: SNACKBAR_SEVERITY.info});
 
     const handleLogin = async () => {
         // Post to sign in api
@@ -78,19 +75,13 @@ export default function SignIn(props) {
             props.history.push('/matchups')
         }
         catch(error){
-            setAlertSeverity(SNACKBAR_SEVERITY.error);
-            setAlertMessage(error.response.data ?
-                error.response.data.message : "An error has occurred during the sign in process."
-            );
-            setOpenAlert(true);
+            setAlert({
+                open: true,
+                message: error.response.data ?
+                    error.response.data.message : "An error has occurred during the sign in process.",
+                severity: SNACKBAR_SEVERITY.error
+            })
         };
-    };
-
-    const handleCloseAlert = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpenAlert(false);
     };
 
     return (
@@ -158,11 +149,7 @@ export default function SignIn(props) {
                     <Copyright/>
                 </Box>
             </Container>
-            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>
-                <MuiAlert onClose={handleCloseAlert} elevation={6} variant="filled" severity={alertSeverity}>
-                    {alertMessage}
-                </MuiAlert>
-            </Snackbar>
+            <Alert alert={alert} setAlert={setAlert}/>
         </div>
     );
 }
