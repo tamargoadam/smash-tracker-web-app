@@ -33,7 +33,7 @@ export const postGameData = async (game) => (await axios.post('http://127.0.0.1:
         }
     })).data;
 
-export const approveGame = async (games) => (await axios.post('http://127.0.0.1:5000/approvegame',
+export const approveGames = async (games) => (await axios.post('http://127.0.0.1:5000/approvegame',
     games,
     {
         headers: {

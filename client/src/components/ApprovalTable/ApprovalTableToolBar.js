@@ -43,7 +43,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 export default function ApprovalTableToolbar(props) {
     const classes = useToolbarStyles();
-    const {numSelected} = props;
+    const {numSelected, handleApproveGames} = props;
 
     return (
         <Toolbar
@@ -64,7 +64,7 @@ export default function ApprovalTableToolbar(props) {
             {numSelected > 0 ? (
                 <>
                     <Tooltip title="Approve">
-                        <IconButton aria-label="approve" className={classes.approveIcon}>
+                        <IconButton aria-label="approve" className={classes.approveIcon} onClick={handleApproveGames}>
                             <ApproveIcon/>
                         </IconButton>
                     </Tooltip>
@@ -81,4 +81,5 @@ export default function ApprovalTableToolbar(props) {
 
 ApprovalTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
+    handleApproveGames: PropTypes.func.isRequired
 };

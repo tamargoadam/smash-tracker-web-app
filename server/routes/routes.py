@@ -55,7 +55,7 @@ def post_match_ups():
 @app.route('/games', methods=['GET', 'POST'])
 def post_games():
     """
-    post all match ups for user
+    post all games for user
     """
     try:
         user = get_user_by_auth(request.headers['Authorization'])
@@ -95,6 +95,24 @@ def add_game():
         user = get_user_by_auth(request.headers['Authorization'])
         db.add_game(user.get_id(), game[USER_CHAR], game[OPPONENT], game[OPPONENT_CHAR],
                     game[STAGE], game[WIN], game[USER_STOCK], game[OPPONENT_STOCK])
+        response = Response('', 200)
+    except Error as e:
+        response = Response(json.dumps(e.__dict__), 400)
+    except AssertionError as e:
+        response = Response('', 400)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+
+@app.route('/approvegame', methods=['GET', 'POST'])
+def approve_game():
+    """
+    approve all requested games for the requesting user
+    """
+    games = request.get_json()
+    try:
+        user = get_user_by_auth(request.headers['Authorization'])
+        db.approve_game(user.get_id(), games)
         response = Response('', 200)
     except Error as e:
         response = Response(json.dumps(e.__dict__), 400)

@@ -136,8 +136,7 @@ def add_game(user: int, user_char: str, opponent: str, opponent_char: str,
     new_game = Game(_id, stage, [user_match, opponent_match])
     games_collection.insert_one(new_game.dict())
     # add match up id to user and opponent's match up arrays
-    users_collection.update_one({ID: user}, {"$push": {GAMES: _id}})
-    users_collection.update_one({ID: opponent}, {"$push": {GAMES: _id}})
+    users_collection.update_many({ID: {"$in": [user, opp[ID]]}}, {"$push": {GAMES: _id}})
     return new_game
 
 
@@ -215,12 +214,12 @@ mike = add_user('Mike', 'Cuervo', 'mikec@gmail.com', 'CuervoPass1', 'Buervo', 'F
 john = add_user('John', 'Carey', 'jc813@yahoo.com', 'JohnPass1', 'John', 'Captain Falcon').get_id()
 am_game1 = add_game(adam, 'Mr. Game & Watch', 'mikec@gmail.com', 'Kirby', 'Final Destination', True, 4, 0).get_id()
 am_game2 = add_game(adam, 'Fox', 'mikec@gmail.com', 'Falco', 'Pokemon Stadium', False, 0, 1).get_id()
-add_game(adam, 'Yoshi', 'jc813@yahoo.com', 'Kirby', 'Fountain of Dreams', True, 4, 0)
-aj_game1 = add_game(adam, 'Captain Falcon', 'jc813@yahoo.com', 'Falco', 'Pokemon Stadium', True, 1, 0).get_id()
+add_game(john, 'Yoshi', 'atamargo@ufl.edu', 'Kirby', 'Fountain of Dreams', True, 4, 0)
+aj_game1 = add_game(john, 'Captain Falcon', 'atamargo@ufl.edu', 'Falco', 'Pokemon Stadium', True, 1, 0).get_id()
 add_game(mike, 'Samus', 'jc813@yahoo.com', 'Falco', 'Yoshi\'s Island', True, 1, 0)
 
 approve_game(mike, [am_game2, am_game1])
-approve_game(john, [aj_game1])
+# approve_game(john, [aj_game1])
 #
 # # remove_user('mikec@gmail.com')
 #

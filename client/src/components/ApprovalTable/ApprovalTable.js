@@ -1,16 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
-import {fetchGames} from "../../utils/Requests";
+import {approveGames, fetchGames} from "../../utils/Requests";
 import {getUser} from "../../utils/AuthRequests";
 
 import ApprovalTableToolbar from './ApprovalTableToolBar'
 import ApprovalTableHead from './ApprovalTableHead'
 import ApprovalRow from "./ApprovalRow";
+import {SNACKBAR_SEVERITY} from "../../constants/Constants";
+import MuiAlert from "@material-ui/lab/Alert/Alert";
+import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 
 function createData(key, opponent, time, user_char, opponent_char, stage, win) {
     return {key, opponent, time, user_char, opponent_char, stage, win};
@@ -74,38 +77,75 @@ export default function ApprovalTable() {
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [games, _setGames] = useState([]);
     const [gameRows, setGameRows] = useState([]);
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [alertMessage, setAlertMessage] = React.useState('');
+    const [alertSeverity, setAlertSeverity] = React.useState(SNACKBAR_SEVERITY.info);
 
+
+    const  setGames = useCallback((g) => {
+        // sets games and gameRows states
+        _setGames(g);
+        let rows = [];
+        g.forEach(game => {
+            let opponent = "";
+            let user_char = "";
+            let opponent_char = "";
+            let win = false;
+            let approved = false;
+            game.player_matches.forEach(pm => {
+                if (pm.user === getUser()._id) {
+                    user_char = pm.character;
+                    win = pm.win;
+                    approved = pm.approved
+                } else {
+                    opponent = pm.email;
+                    opponent_char = pm.character
+                }
+            });
+            if (!approved) rows.push(createData(game._id, opponent, game.date, user_char,
+                opponent_char, game.stage, win));
+        });
+        setGameRows(rows)
+    }, [_setGames, setGameRows]);
 
     useEffect(() => {
-        fetchGames(getUser()).then(async (games) => {
+        fetchGames(getUser()).then(async (g) => {
             // Set the topics state with the response data
-            let rows = [];
-            games.forEach(game => {
-                let opponent = "";
-                let user_char = "";
-                let opponent_char = "";
-                let win = false;
-                game.player_matches.forEach(pm => {
-                    if (pm.user === getUser()._id){
-                        user_char = pm.character;
-                        win = pm.win
-                    } else {
-                        opponent = pm.email;
-                        opponent_char = pm.character
-                    }
-                });
-                rows.push(createData(game._id, opponent, game.date, user_char,
-                    opponent_char, game.stage, win));
-            });
-            setGameRows(rows)
+            setGames(g)
         });
-    }, []);
+    }, [setGames]);
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenAlert(false);
+    };
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
+    };
+
+    const handleApproveGames = () => {
+        approveGames(selected).then(() => {
+            let g = [...games];
+            g = g.filter(game => !selected.some(s => s === game._id));
+            setGames(g);
+                setAlertSeverity(SNACKBAR_SEVERITY.success);
+                setAlertMessage('The selected games have been successfully approved!');
+                setOpenAlert(true);
+            }
+        ).catch(error => {
+            setAlertSeverity(SNACKBAR_SEVERITY.error);
+            setAlertMessage(error.response.data.message ?
+                error.response.data.message : "An error has occurred while attempting to approve the selected games."
+            );
+            setOpenAlert(true);
+        });
     };
 
     const handleSelectAllClick = (event) => {
@@ -118,6 +158,7 @@ export default function ApprovalTable() {
     };
 
     const handleClick = (event, key) => {
+        console.log(key)
         const selectedIndex = selected.indexOf(key);
         let newSelected = [];
 
@@ -151,7 +192,7 @@ export default function ApprovalTable() {
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <ApprovalTableToolbar numSelected={selected.length}/>
+                <ApprovalTableToolbar handleApproveGames={handleApproveGames} numSelected={selected.length}/>
                 <TableContainer>
                     <Table
                         className={classes.table}
@@ -197,6 +238,11 @@ export default function ApprovalTable() {
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </Paper>
+            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>
+                <MuiAlert onClose={handleCloseAlert} elevation={6} variant="filled" severity={alertSeverity}>
+                    {alertMessage}
+                </MuiAlert>
+            </Snackbar>
         </div>
     );
 }
