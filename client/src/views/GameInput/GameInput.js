@@ -16,7 +16,7 @@ import StageScrollSelect from "../../components/StageScrollSelect/StageScrollSel
 import StockSlider from "../../components/StockSlider/StockSlider";
 import ToggleSwitch from "../../components/ToggleSwitch/ToggleSwitch";
 import {postGameData} from "../../utils/Requests";
-import {getToken, getUser} from "../../utils/AuthRequests";
+import {getUser} from "../../utils/AuthRequests";
 import NavigationDrawer from "../../components/NavigationDrawer/NavigationDrawer";
 import OpponentSearch from "../../components/OpponentSearch/OpponentSearch";
 
@@ -109,7 +109,7 @@ export default function GameInput(props) {
     // Send game data to server
     const handleSubmit = async () => {
         // Post to game input api
-        postGameData(getToken(), game).then(() =>
+        postGameData(game).then(() =>
             {
                 setAlertSeverity(SNACKBAR_SEVERITY.success);
                 setAlertMessage('Game record successfully submitted!');

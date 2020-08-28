@@ -6,7 +6,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import {fetchGames} from "../../utils/Requests";
-import {getToken, getUser} from "../../utils/AuthRequests";
+import {getUser} from "../../utils/AuthRequests";
 
 import ApprovalTableToolbar from './ApprovalTableToolBar'
 import ApprovalTableHead from './ApprovalTableHead'
@@ -78,20 +78,16 @@ export default function ApprovalTable() {
 
 
     useEffect(() => {
-        fetchGames(getToken(), getUser()).then(async (games) => {
+        fetchGames(getUser()).then(async (games) => {
             // Set the topics state with the response data
             let rows = [];
             games.forEach(game => {
                 let opponent = "";
                 let user_char = "";
                 let opponent_char = "";
-                let win = false
+                let win = false;
                 game.player_matches.forEach(pm => {
-                    console.log('---')
-                    console.log(getUser()._id)
-                    console.log(pm.user, pm.email)
                     if (pm.user === getUser()._id){
-                        console.log('here')
                         user_char = pm.character;
                         win = pm.win
                     } else {

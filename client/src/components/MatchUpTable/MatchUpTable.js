@@ -10,7 +10,7 @@ import MatchUpRow from './MatchUpRow'
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles";
 import {fetchMatchUps} from "../../utils/Requests";
-import {getToken, getUser} from "../../utils/AuthRequests";
+import {getUser} from "../../utils/AuthRequests";
 
 // TODO: Style Table
 const HeaderRow = withStyles(() => ({
@@ -26,7 +26,7 @@ export default function MatchUpTable(props) {
     const [matchUps, setMatchUps] = useState([]);
 
     useEffect( () => {
-        fetchMatchUps(getToken(), getUser()).then((response) => {
+        fetchMatchUps(getUser()).then((response) => {
             // Set the topics state with the response data
             setMatchUps(response);
         })
